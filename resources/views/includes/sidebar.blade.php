@@ -1,6 +1,6 @@
 <div>
     <div class="logo-wrapper">
-        <a href="index.html">
+        <a href="/">
             <img class="img-fluid for-light" src="../assets/images/logo/logo.png" alt="">
             <img class="img-fluid for-dark" src="../assets/images/logo/logo-dark.png" alt="">
         </a>
@@ -8,7 +8,7 @@
         <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-left"> </i></div>
     </div>
     <div class="logo-icon-wrapper">
-        <a href="index.html">
+        <a href="/">
             <img class="img-fluid for-light" src="../assets/images/logo/logo-icon.png" alt="">
             <img class="img-fluid for-dark" src="../assets/images/logo/logo-icon-dark.png" alt="">
         </a>
@@ -18,7 +18,7 @@
         <div id="sidebar-menu">
             <ul class="sidebar-links" id="simple-bar">
                 <li class="back-btn">
-                    <a href="index.html">
+                    <a href="/">
                         <img class="img-fluid for-light" src="../assets/images/logo/logo-icon.png" alt="">
                         <img class="img-fluid for-dark" src="../assets/images/logo/logo-icon-dark.png" alt="">
                     </a>

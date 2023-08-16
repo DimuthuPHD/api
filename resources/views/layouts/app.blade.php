@@ -14,12 +14,7 @@
     <title>{{config('app.name')}}</title>
     <!-- Google font-->
 
-    <link rel="preconnect" href="{{asset('assets/fonts.googleapis.com/index.html')}}">
-    <link rel="preconnect" href="{{asset('assets/fonts.gstatic.com/index.html')}}" crossorigin="">
-
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/font-awesome.css')}}">
-
-
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/font-awesome.css')}}">
     <!-- ico-font-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/icofont.css')}}">
@@ -65,26 +60,7 @@
                     @include('includes.breadcrumbs')
                 </div>
                 <!-- Container-fluid starts-->
-                <div class="container-fluid default-page">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-5">
-                            <div class="card profile-greeting">
-                                <div class="card-body">
-                                    <div>
-                                        <h1>Welcome,William</h1>
-                                        <p> You have completed 40% of your this week! Start a new goal & improve your
-                                            result</p><a class="btn" href="user-profile.html">Continue<i
-                                                data-feather="arrow-right"></i></a>
-                                    </div>
-                                    <div class="greeting-img"><img class="img-fluid"
-                                            src="../assets/images/dashboard/profile-greeting/bg.png" alt=""></div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
+                @yield('content')
                 <!-- Container-fluid Ends-->
             </div>
             <!-- footer start-->
