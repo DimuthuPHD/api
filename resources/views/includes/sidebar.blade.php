@@ -31,24 +31,6 @@
                         <h4 class="lan-1">General </h4>
                     </div>
                 </li>
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
-                        <i data-feather="user"> </i><span>Job Seekers</span>
-                    </a>
-                </li>
-
-                @if (auth()->user()->isAdmin())
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title" href="javascript:void(0)">
-                        <i data-feather="user"></i>
-                        <span>Users</span>
-                    </a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="{{route('user.index', ['role' => 'admin'])}}">Admins</a></li>
-                        <li><a href="{{route('user.index', ['role' => 'consultant'])}}">Consultants</a></li>
-                    </ul>
-                </li>
-                @endif
 
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
@@ -57,19 +39,19 @@
                     </a>
                 </li>
 
-
+                @if (auth()->user()->isAdmin())
                 <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav  {{active_nav('consultant.index')}}"
-                        href="{{route('consultant.index')}}">
-                        <i data-feather="user"> </i><span>Consultants</span>
+                    <a class="sidebar-link sidebar-title link-nav {{route('user.index')}}   {{active_nav('job-seekeruser.index')}}"
+                        href="{{route('user.index')}}">
+                        <i data-feather="user"> </i><span>Users</span>
                     </a>
                 </li>
-
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('appointment.index')}}">
-                        <i data-feather="book"> </i><span>Appointments</span>
-                    </a>
-                </li>
+                <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i data-feather="airplay"></i><span class="lan-6">Widgets</span></a>
+                    <ul class="sidebar-submenu">
+                      <li><a href="general-widget.html">General</a></li>
+                      <li><a href="chart-widget.html">Chart</a></li>
+                    </ul>
+                  </li>
 
             </ul>
             <br>
