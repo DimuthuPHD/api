@@ -22,8 +22,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:70',
-            'email' => 'required|email|unique:job_seekers,email',
+            'first_name' => 'required|max:70',
+            'last_name' => 'required|max:70',
+            'role_id' => 'required|exists:roles,id',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'status' => 'boolean',
         ];

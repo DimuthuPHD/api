@@ -39,7 +39,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        return view('user.create')->withRoles(Role::all()->pluck('name', 'id')->toArray());
     }
 
     /**
@@ -66,7 +66,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit')->withModel($user)->withRoles(Role::all()->pluck('id', 'name')->toArray());
+        return view('user.edit')->withModel($user)->withRoles(Role::all()->pluck('name', 'id')->toArray());
     }
 
     /**
