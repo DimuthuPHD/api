@@ -1,6 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.app', ['page_title' => $role->name. ' List'])
 @section('content')
-@props(['route' => null , 'columns' => []])
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
@@ -25,7 +24,7 @@
                             @foreach ($data as $user)
                             <tr>
                                 <th scope="row">#{{$user->id}}</th>
-                                <td>{{$user->name}}</td>
+                                <td>{{$user->full_name}}</td>
                                 <td>
                                     <x-utils.status :status="$user->status"></x-utils.status>
                                 </td>
