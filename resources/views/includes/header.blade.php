@@ -7,7 +7,8 @@
                     <div class="d-flex profile-media"><img class="b-r-50" src="../assets/images/dashboard/profile.png"
                             alt="">
                         <div class="flex-grow-1"><span>{{auth()->user()->name}}</span>
-                            <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+                            <p class="mb-0 font-roboto">{{auth()->user()->role_name}} <i class="middle fa fa-angle-down"></i>
+                            </p>
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
@@ -17,7 +18,7 @@
                         <li>
                             <form action="{{route('logOut')}}" method="POST">
                                 @csrf
-                            <button type="submit"><i data-feather="log-in"> </i><span>Logout</span></button>
+                                <button type="submit"><i data-feather="log-in"> </i><span>Logout</span></button>
                             </form>
                         </li>
                     </ul>
