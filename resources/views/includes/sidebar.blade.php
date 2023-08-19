@@ -36,6 +36,11 @@
                         <i data-feather="user"> </i><span>Job Seekers</span>
                     </a>
                 </li>
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('user.index')}}">
+                        <i data-feather="user"> </i><span>Users</span>
+                    </a>
+                </li>
 
             </ul>
             <br>
