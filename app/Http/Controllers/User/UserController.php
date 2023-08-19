@@ -5,9 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\Gender;
+use App\Models\Role;
 use App\Models\User;
-use App\Models\JobType;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -15,9 +14,11 @@ class UserController extends Controller
 {
     private UserService $userService;
 
-    function __construct(UserService $userService){
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -44,9 +45,11 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']);
             $data['status'] = isset($data['status']) ? 1 : 0;
             $this->userService->store($data);
+
             return redirect()->route('user.index')->withSuccess('User created Successfully');
         } catch (\Throwable $th) {
             throw $th;
+
             return redirect()->back()->withError('user creating error')->withInput($request->validated());
         }
     }
@@ -56,7 +59,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit')->withModel($user);
+        return view('user.edit')->withModel($user)->withRoles(Role::all()->pluck('id', 'name')->toArray());
     }
 
     /**
@@ -69,11 +72,12 @@ class UserController extends Controller
             $data['password'] = isset($data['password']) ? bcrypt($data['password']) : $user->password;
             $data['status'] = isset($data['status']) ? 1 : 0;
             $user->update($data);
+
             return redirect()->route('user.index')->withSuccess('user Updated Successfully');
         } catch (\Throwable $th) {
             throw $th;
+
             return redirect()->back()->withError('user Updating error');
         }
     }
-
 }

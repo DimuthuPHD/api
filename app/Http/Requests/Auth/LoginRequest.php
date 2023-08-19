@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
     public function authenticate()
     {
         $this->ensureIsNotRateLimited();
-        $this->ensureIsUserIsActive();
+        $this->ensureIsactiveUser();
 
         if (! Auth::guard('web')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
@@ -95,21 +95,20 @@ class LoginRequest extends FormRequest
         return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 
-    /**
-     *chech if user email is confirmed
-     *
-     * @return string
-     */
-    public function ensureIsUserIsActive()
+    public function ensureIsactiveUser()
     {
-        $user = User::whereEmail($this->email)->first();
-        if (!$user) {
+
+        $user = User::where(['email' => $this->email])->first();
+
+        if (! $user) {
             return false;
         }
-        if (! $user->status === 1) {
+
+        if ($user->status !== 1) {
             throw ValidationException::withMessages([
-                'email' => 'Your account blocked. Please contact administration to enable your account.',
+                'email' => 'Your Account is inactive. Please contact administrator',
             ]);
         }
+
     }
 }
