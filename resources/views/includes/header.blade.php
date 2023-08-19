@@ -6,7 +6,7 @@
                 <li class="profile-nav onhover-dropdown p-0 me-0">
                     <div class="d-flex profile-media"><img class="b-r-50" src="../assets/images/dashboard/profile.png"
                             alt="">
-                        <div class="flex-grow-1"><span>{{auth()->user()->name}}</span>
+                        <div class="flex-grow-1"><span>{{auth()->user()->first_name}}</span>
                             <p class="mb-0 font-roboto">{{auth()->user()->role_name}} <i class="middle fa fa-angle-down"></i>
                             </p>
                         </div>
