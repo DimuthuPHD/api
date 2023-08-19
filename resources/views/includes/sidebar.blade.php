@@ -37,6 +37,12 @@
                     </a>
                 </li>
 
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
+                        <i data-feather="user"> </i><span>Job Seekers</span>
+                    </a>
+                </li>
+
 
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
