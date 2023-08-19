@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
-use  Illuminate\Support\Str;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
@@ -32,7 +33,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-     /**
+    /**
      * Attempt to authenticate the request's credentials.
      *
      * @return void
@@ -42,6 +43,8 @@ class LoginRequest extends FormRequest
     public function authenticate()
     {
         $this->ensureIsNotRateLimited();
+        $this->ensureIsUserIsActive();
+
         if (! Auth::guard('web')->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
@@ -90,5 +93,23 @@ class LoginRequest extends FormRequest
     public function throttleKey()
     {
         return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
+    }
+
+    /**
+     *chech if user email is confirmed
+     *
+     * @return string
+     */
+    public function ensureIsUserIsActive()
+    {
+        $user = User::whereEmail($this->email)->first();
+        if (!$user) {
+            return false;
+        }
+        if (! $user->status === 1) {
+            throw ValidationException::withMessages([
+                'email' => 'Your account blocked. Please contact administration to enable your account.',
+            ]);
+        }
     }
 }

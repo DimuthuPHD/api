@@ -19,7 +19,6 @@ Route::get('/', [LoginController::class, 'showLoginForm'])->name('loginView');
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::post('logOut', [LoginController::class, 'logOut'])->name('logOut');
 
-
-Route::group(['middleware' => ['auth:web']], function () {
+Route::group(['middleware' => ['auth:web', 'is_active']], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
