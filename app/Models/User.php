@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public const TYPE_ADMIN = 'admin';
+
     public const TYPE_USER = 'user';
 
     /**
@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
+        'role_id',
     ];
 
     /**
@@ -47,4 +48,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function getRoleNameAttribute()
+    {
+        $role = $this->role;
+
+        return $role ? $role->name : null;
+    }
 }
