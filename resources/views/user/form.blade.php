@@ -1,10 +1,35 @@
 <div class="row">
-    <div class="col-md-6">
+
+    <div class="col-md-4">
         <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input class="form-control" type="text" placeholder="Name" name="name"
-                value="{{old('name', $model?->name)}}">
-            <span class="text-danger">{{$errors->first('name')}}</span>
+            <label class="form-label">First Name</label>
+            <input class="form-control" type="text" placeholder="First Name" name="first_name"
+                value="{{old('first_name', $model?->first_name)}}">
+            <span class="text-danger">{{$errors->first('first_name')}}</span>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input class="form-control" type="text" placeholder="Last Name" name="last_name"
+                value="{{old('last_name', $model?->last_name)}}">
+            <span class="text-danger">{{$errors->first('last_name')}}</span>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-control btn-square" name="role_id">
+                <option value="">--Select--</option>
+                @foreach ($roles as $id => $role)
+                <option value="{{$id}}" {{old('role_id', $model?->role_id) == $id ? 'selected' : null}}>
+                    {{$role}}
+                </option>
+                @endforeach
+            </select>
+            <span class="text-danger">{{$errors->first('role_id')}}</span>
         </div>
     </div>
 
@@ -20,8 +45,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input class="form-control" type="password" placeholder="Address" name="password"
-                value="">
+            <input class="form-control" type="password" placeholder="Address" name="password" value="">
             <span class="text-danger">{{$errors->first('password')}}</span>
         </div>
     </div>
