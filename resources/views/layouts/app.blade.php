@@ -59,6 +59,7 @@
             <div class="page-body">
                 <div class="container-fluid">
                     @include('includes.breadcrumbs')
+                    @include('includes.alert')
                 </div>
                 <!-- Container-fluid starts-->
                 @yield('content')
@@ -106,9 +107,10 @@
     <script src="{{asset('assets/js/typeahead/typeahead.bundle.js') }}"></script>
     <script src="{{asset('assets/js/typeahead/typeahead.custom.js') }}"></script>
     <script src="{{asset('assets/js/typeahead-search/handlebars.js') }}"></script>
-    <script src="{{asset('assets/js/typeahead-search/typeahead-custom.js') }}"></script>
     <!-- Theme js-->
     <script src="{{asset('assets/js/script.js') }}"></script>
+
+    @stack('scripts')
 </body>
 
 </html>
