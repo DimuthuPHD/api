@@ -24,7 +24,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return view('user.index')->withData($this->userService->paginate(15));
+        $role = $request->role;
+        $role = Role::where(['name' => $role])->first();
+
+        if (! $role) {
+            return redirect()->route('user.index', ['role' => 'consultant']);
+        }
+
+        return view('user.index')->withData($this->userService->byRole($role->name))->withRole($role);
     }
 
     /**
