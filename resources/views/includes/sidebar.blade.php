@@ -31,8 +31,10 @@
                         <h4 class="lan-1">General </h4>
                     </div>
                 </li>
+
                 <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
+                    <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
+                        href="{{route('job-seeker.index')}}">
                         <i data-feather="user"> </i><span>Job Seekers</span>
                     </a>
                 </li>
@@ -42,6 +44,10 @@
                         href="{{route('job-seeker.index')}}">
                         <i data-feather="user"> </i><span>Job Seekers</span>
                     </a>
+                    <ul class="sidebar-submenu">
+                        <li><a href="{{route('user.index', ['role' => 'admin'])}}">Admins</a></li>
+                        <li><a href="{{route('user.index', ['role' => 'consultant'])}}">Consultants</a></li>
+                    </ul>
                 </li>
 
                 <li class="sidebar-list">
