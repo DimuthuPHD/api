@@ -37,6 +37,7 @@
                     </a>
                 </li>
 
+
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
                         href="{{route('job-seeker.index')}}">
@@ -64,18 +65,18 @@
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title" href="javascript:void(0)">
                         <i data-feather="user"></i>
-                        <span class="lan-6">Users</span>
+                        <span>Users</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li><a href="{{route('user.index', ['role' => 'admin'])}}">Admins</a></li>
                         <li><a href="{{route('user.index', ['role' => 'consultant'])}}">Consultants</a></li>
                     </ul>
                 </li>
-                <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i data-feather="airplay"></i><span class="lan-6">Widgets</span></a>
-                    <ul class="sidebar-submenu">
-                        <li><a href="{{route('user.index', ['role' => 'admin'])}}">Admins</a></li>
-                        <li><a href="{{route('user.index', ['role' => 'consultant'])}}">Consultants</a></li>
-                    </ul>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('appointment.index')}}">
+                        <i data-feather="book"> </i><span>Appointments</span>
+                    </a>
                 </li>
 
             </ul>
