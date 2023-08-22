@@ -31,6 +31,11 @@ class Appointment extends Model
         return $this->belongsTo(JobSeeker::class);
     }
 
+    public function status()
+    {
+        return $this->belongsTo(AppointmentStatus::class);
+    }
+
     // public function stasuses()
     // {
     //     return $this->hasMany(Activity::class, 'properties->attributes->status_id');

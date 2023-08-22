@@ -10,6 +10,8 @@ use App\Models\AppointmentStatus;
 use App\Models\JobSeeker;
 use App\Services\AppointmentService;
 use App\Services\UserService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -30,7 +32,24 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        return view('appointment.index')->withData($this->appointmentService->orderBy('created_at', 'desc')->paginate(15));
+
+        $appointments = $this->appointmentService->filter((array_filter($request->all())));
+
+        if ($request->has('export')) {
+
+            $pdf = Pdf::loadView('exports.appointments', ['appointments' => $appointments->get()])
+                ->setPaper('a4', 'landscape')
+                ->setOption('margin-top', 20)
+                ->setOption('margin-bottom', 20)
+                ->setOption('margin-left', 20)
+                ->setOption('margin-right', 20)
+                ->setOption(['dpi' => 150, 'defaultFont' => 'sans-serif']);
+
+            return $pdf->download('appintments_'.Carbon::parse(now())->format('y_m_d').'_'.bin2hex(random_bytes(2)).'.pdf');
+
+        }
+
+        return view('appointment.index')->withData($appointments->paginate(15));
     }
 
     /**

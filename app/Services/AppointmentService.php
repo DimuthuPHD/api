@@ -57,4 +57,39 @@ class AppointmentService extends BaseService
 
         return $exsist ? false : true;
     }
+
+    public function filter(array $data)
+    {
+        $query = $this->model->with('status')->orderBy('created_at', 'desc');
+
+        $query->when(isset($data['date_from']), function ($q) use ($data) {
+            return $q->where('date', '>=', $data['date_from']);
+        });
+
+        $query->when(isset($data['date_to']), function ($q) use ($data) {
+            return $q->where('date', '<=', $data['date_to']);
+        });
+
+        $query->when(isset($data['time_from']), function ($q) use ($data) {
+            return $q->where('time_from', '>=', $data['time_from']);
+        });
+
+        $query->when(isset($data['time_to']), function ($q) use ($data) {
+            return $q->where('time_to', '<=', $data['time_to']);
+        });
+
+        $query->when(isset($data['consultant']), function ($q) use ($data) {
+            return $q->whereHas('consultant', function ($q) use ($data) {
+                $q->where('email', 'like', '%'.$data['consultant'].'%');
+            });
+        });
+
+        $query->when(isset($data['job_seeker']), function ($q) use ($data) {
+            return $q->whereHas('jobSeeker', function ($q) use ($data) {
+                $q->where('email', 'like', '%'.$data['job_seeker'].'%');
+            });
+        });
+
+        return $query;
+    }
 }
