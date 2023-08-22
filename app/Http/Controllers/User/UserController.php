@@ -31,7 +31,7 @@ class UserController extends Controller
             return redirect()->route('user.index', ['role' => 'consultant']);
         }
 
-        return view('user.index')->withData($this->userService->byRole($role->name, 15))->withRole($role);
+        return view('user.index')->withData($this->userService->byRole($role->name))->withRole($role);
     }
 
     /**

@@ -19,7 +19,7 @@ class UserService extends BaseService
         return $this->model->create($data);
     }
 
-    public function byRole(string $role, string $sortBy = 'first_name', int $paginate = null)
+    public function byRole(string $role, string $sortBy = 'first_name', int $paginate = 15)
     {
         $users = $this->model->with('role')->orderBy($sortBy)->whereHas('role', function ($query) use ($role) {
             $query->where('name', $role);
