@@ -19,10 +19,30 @@ class UserService extends BaseService
         return $this->model->create($data);
     }
 
-    public function byRole(string $role)
+    public function byRole(string $role, string $sortBy = 'first_name', int $paginate = null)
     {
-        return $this->model->with('role')->whereHas('role', function ($query) use ($role) {
+        $users = $this->model->with('role')->orderBy($sortBy)->whereHas('role', function ($query) use ($role) {
             $query->where('name', $role);
-        })->paginate(15);
+        });
+
+        if ($paginate !== null) {
+            $users = $users->paginate(15);
+        } else {
+            $users = $users->get();
+        }
+
+        return $users;
+    }
+
+    private function getAvailableConsultatns($date, $timeFrom, $timeTo)
+    {
+        return $this->model
+            ->where(['role_id' => 2])
+            ->whereDoesntHave('appointments', function ($query) use ($date, $timeFrom, $timeTo) {
+                $query->where('date', $date)
+                    ->where('time_from', '<', $timeTo)
+                    ->where('time_to', '>', $timeFrom);
+            })
+            ->first();
     }
 }
