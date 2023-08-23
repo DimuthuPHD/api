@@ -25,6 +25,10 @@ class UserService extends BaseService
             $query->where('name', $role);
         });
 
+        if (auth()->user()->isConsultant()) {
+            $users = $users->where(['id' => auth()->user()->id]);
+        }
+
         if ($paginate !== null) {
             $users = $users->paginate(15);
         } else {

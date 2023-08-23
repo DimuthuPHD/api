@@ -71,6 +71,8 @@ class AppointmentController extends Controller
         try {
 
             $data = $request->validated();
+            $data['consultant_id'] = auth()->user()->isConsultant() ? auth()->user()->id : $data['consultant_id'];
+            $data['status_id'] = 1;
             $is_consultant_avaiable = $this->appointmentService->isConsultantAvailable($data);
             $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data);
 
@@ -115,6 +117,7 @@ class AppointmentController extends Controller
     {
         try {
             $data = $request->validated();
+            $data['consultant_id'] = auth()->user()->isConsultant() ? auth()->user()->id : $data['consultant_id'];
             $is_consultant_avaiable = $this->appointmentService->isConsultantAvailable($data, $appointment->id);
             $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $appointment->id);
 

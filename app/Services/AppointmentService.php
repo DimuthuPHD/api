@@ -90,6 +90,10 @@ class AppointmentService extends BaseService
             });
         });
 
+        $query->when(auth()->user()->isConsultant(), function ($q) {
+            return $q->where(['consultant_id' => auth()->user()->id]);
+        });
+
         return $query;
     }
 }
