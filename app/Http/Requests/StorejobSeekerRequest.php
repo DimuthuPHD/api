@@ -33,7 +33,7 @@ class StorejobSeekerRequest extends FormRequest
             'education_level_id' => 'required|exists:education_levels,id',
             'work_experience' => 'required',
             'notes' => 'nullable',
-            'status' => 'required|accepted',
+            'status' => 'boolean',
         ];
     }
 }

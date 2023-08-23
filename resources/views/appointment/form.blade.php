@@ -14,6 +14,8 @@
             <span class="text-danger">{{$errors->first('job_seeker_id')}}</span>
         </div>
     </div>
+
+    @if (auth()->user()->isAdmin())
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label">Consultant</label>
@@ -28,6 +30,7 @@
             <span class="text-danger">{{$errors->first('consultant_id')}}</span>
         </div>
     </div>
+    @endif
 
 
     <div class="col-md-3">
@@ -57,6 +60,7 @@
         </div>
     </div>
 
+    @if ($model !== null)
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label">Status</label>
@@ -66,12 +70,14 @@
                 <option value="{{$id}}" {{old('status_id', $model?->status_id) == $id ?
                     'selected' : null}}>
                     {{$role}}
-                    </option>
-                 @endforeach
+                </option>
+                @endforeach
             </select>
             <span class="text-danger">{{$errors->first('status_id')}}</span>
         </div>
     </div>
+
+    @endif
 
     <span class="text-danger">{{$errors->first('status')}}</span>
 </div>

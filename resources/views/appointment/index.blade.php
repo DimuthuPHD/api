@@ -48,9 +48,10 @@
                                 placeholder="Job Seeker Email">
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <div class="mb-3">
                             <br>
+                            <a href="{{route('appointment.create')}}" class="btn btn-square btn-success float-left">+ New</a>
                             <button type="submit" class="btn btn-square btn-primary pull-right">Filter</button>
                         </div>
                     </div>
@@ -65,7 +66,8 @@
                         <a href="{{route('appointment.index')}}" class="btn btn-square btn-danger">Reset
                             Filters</a>
 
-                        <a href="{{route('appointment.index', array_merge($params))}}" class="btn btn-square btn-secondary">Export</a>
+                        <a href="{{route('appointment.index', array_merge($params))}}"
+                            class="btn btn-square btn-secondary">Export</a>
                         @endif
 
                     </div>
