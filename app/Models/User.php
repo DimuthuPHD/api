@@ -28,6 +28,8 @@ class User extends Authenticatable
         'password',
         'status',
         'role_id',
+        'phone',
+        'notes',
     ];
 
     /**
@@ -70,5 +72,20 @@ class User extends Authenticatable
     public function appointments()
     {
         return $this->hasMany(Appointment::class, 'consultant_id', 'id');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role->name == 'admin';
+    }
+
+    public function isConsultant()
+    {
+        return $this->role->name == 'consultant';
+    }
+
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class, 'country_users');
     }
 }
