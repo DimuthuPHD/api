@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.app', ['page_title' => 'Consultants'])
 @section('content')
-@props(['route' => null , 'columns' => []])
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
-            <a href="{{route('consultant.create')}}" class="btn btn-pill btn-primary btn-air-primary pull-right">Add New</a>
+            <a href="{{route('consultant.create')}}" class="btn btn-pill btn-primary btn-air-primary pull-right">Add
+                New</a>
         </div>
         <div class="card-block row">
             <div class="col-sm-12 col-lg-12 col-xl-12">

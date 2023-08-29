@@ -6,8 +6,9 @@
         <div class="row">
 
             <div class="col-xl-12">
-                <x-utils.forms.patch :route="route('job-seeker.update', $jobSeeker->id)" :cancel="route('job-seeker.index')" title="Edit Job Seeker" :files="true">
-                    @include('job-seeker.form', ['model' =>$jobSeeker])
+                <x-utils.forms.patch :route="route('consultant.update', $consultant->id)"
+                    :cancel="route('consultant.index')" title="Edit Job Seeker" :files="true">
+                    @include('consultant.form', ['model' =>$consultant])
                 </x-utils.forms.patch>
 
             </div>

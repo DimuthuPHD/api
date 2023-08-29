@@ -60,7 +60,10 @@ class ConsultantController extends Controller
      */
     public function edit(Consultant $consultant)
     {
-        //
+        return view('consultant.edit')->withConsultant($consultant)
+            ->withGenders(Gender::all()->pluck('name', 'id')->toArray())
+            ->withJobTypes(JobType::all()->pluck('name', 'id')->toArray())
+            ->withCountries(Country::all()->pluck('name', 'id')->toArray());
     }
 
     /**
