@@ -1,4 +1,4 @@
-@extends('layouts.app', ['page_title' => $role->name. ' List'])
+@extends('layouts.app', ['page_title' => 'Admin List'])
 @section('content')
 <div class="col-sm-12">
     <div class="card">

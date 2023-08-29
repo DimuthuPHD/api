@@ -49,7 +49,7 @@
             <select class="form-control btn-square" name="job_type_id">
                 <option value="">--Select--</option>
                 @foreach ($jobTypes as $id => $jobType)
-                <option value="{{$id}}" {{old('job_type_id', $model?-> job_type_id) == $id ?
+                <option value="{{$id}}" {{old('job_type_id', $model?->job_type_id) == $id ?
                     'selected' : null}}>
                     {{$jobType}}
                 </option>
