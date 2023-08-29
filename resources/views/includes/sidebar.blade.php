@@ -52,6 +52,14 @@
                     </a>
                 </li>
 
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav  {{active_nav('consultant.index')}}"
+                        href="{{route('consultant.index')}}">
+                        <i data-feather="user"> </i><span>Consultants</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav" href="{{route('appointment.index')}}">
                         <i data-feather="book"> </i><span>Appointments</span>
