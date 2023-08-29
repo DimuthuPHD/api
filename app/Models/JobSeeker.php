@@ -5,10 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class JobSeeker extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
+
+    protected $guard = 'api';
 
     protected $fillable = [
         'gender_id',
@@ -25,6 +28,15 @@ class JobSeeker extends Model
         'email_verified_at',
         'password',
         'status',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     public function getFullNameAttribute()

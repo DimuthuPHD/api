@@ -47,9 +47,8 @@ class JobSeekerController extends Controller
     {
         try {
             $data = $request->validated();
-            $data['password'] = isset($data['password']) ? $data['password'] : 'secret';
             $data['password'] = bcrypt($data['password']);
-            $data['status'] = isset($data['status']) ? 1 : 0;
+            $data['status'] = 1;
             $this->jobseekerService->store($data);
 
             return redirect()->route('job-seeker.index')->withSuccess('Job Seeker Updated Successfully');

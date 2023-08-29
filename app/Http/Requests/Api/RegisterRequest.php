@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StorejobSeekerRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,13 +29,22 @@ class StorejobSeekerRequest extends FormRequest
             'last_name' => 'required|max:70',
             'date_of_birth' => 'required|date',
             'address' => 'required|max:250',
-            'telephone' => 'required|unique:job_seekers,telephone',
+            'telephone' => 'required',
             'email' => 'required|email|unique:job_seekers,email',
             'job_type_id' => 'required|exists:job_types,id',
             'education_level_id' => 'required|exists:education_levels,id',
             'work_experience' => 'required',
             'notes' => 'nullable',
-            'status' => 'boolean',
+            'password' => 'required|confirmed|min:8',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors(),
+        ]));
     }
 }
