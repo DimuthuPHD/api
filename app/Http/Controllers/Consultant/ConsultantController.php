@@ -44,7 +44,28 @@ class ConsultantController extends Controller
      */
     public function store(StoreConsultantRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            $data['password'] = bcrypt('password');
+            $data['status'] = isset($data['status']) ? 1 : 0;
+            $data['email_verified_at'] = null;
+            $consultant = $this->consultantService->store($data);
+
+            if ($consultant) {
+                if ($request->has('countries')) {
+                    $consultant->countries()->sync($request->countries);
+                }
+                if ($request->has('job_types')) {
+                    $consultant->jobTypes()->sync($request->job_types);
+                }
+            }
+
+            return redirect()->route('consultant.index')->withSuccess('Consultant created Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+
+            return redirect()->back()->withError('Consultant creating error')->withInput($request->validated());
+        }
     }
 
     /**
@@ -71,7 +92,23 @@ class ConsultantController extends Controller
      */
     public function update(UpdateConsultantRequest $request, Consultant $consultant)
     {
-        //
+        try {
+            $data = array_filter($request->validated());
+            $data['status'] = isset($data['status']) ? 1 : 0;
+            if ($request->has('countries')) {
+                $consultant->countries()->sync($request->countries);
+            }
+            if ($request->has('job_types')) {
+                $consultant->jobTypes()->sync($request->job_types);
+            }
+            $consultant->update($data);
+
+            return redirect()->route('consultant.index')->withSuccess('Consultant updated Successfully');
+        } catch (\Throwable $th) {
+            throw $th;
+
+            return redirect()->back()->withError('Consultant updating error')->withInput($request->validated());
+        }
     }
 
     /**

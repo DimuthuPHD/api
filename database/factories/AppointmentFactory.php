@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Consultant;
 use App\Models\JobSeeker;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -36,7 +36,7 @@ class AppointmentFactory extends Factory
         }
 
         return [
-            'job_seeker_id' => User::where(['role_id' => 2])->inRandomOrder()->first()->id,
+            'job_seeker_id' => Consultant::inRandomOrder()->first()->id,
             'consultant_id' => JobSeeker::inRandomOrder()->first()->id,
             'date' => $dateTime,
             'time_from' => $timeFrom,
@@ -56,7 +56,7 @@ class AppointmentFactory extends Factory
      */
     private function getAvailableUser($userType, $date, $timeFrom, $timeTo)
     {
-        $userModel = $userType === 'consultant' ? User::query() : JobSeeker::query();
+        $userModel = $userType === 'consultant' ? Consultant::query() : JobSeeker::query();
 
         return $userModel
             ->whereDoesntHave('appointments', function ($query) use ($date, $timeFrom, $timeTo) {

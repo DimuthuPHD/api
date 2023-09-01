@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Consultant;
 
+use App\Models\Country;
 use App\Models\JobType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,10 +29,9 @@ class StoreConsultantRequest extends FormRequest
             'last_name' => 'required|max:70',
             'address' => 'required|max:250',
             'telephone' => 'required',
-            'email' => 'required|email|unique:job_seekers,email',
+            'email' => 'required|email|unique:consultants,email',
             'job_types' => 'required|array|in:'.implode(',', JobType::all()->pluck('id')->toArray()),
-            'education_level_id' => 'required|exists:education_levels,id',
-            'work_experience' => 'required',
+            'countries' => 'required|array|in:'.implode(',', Country::all()->pluck('id')->toArray()),
             'notes' => 'nullable',
             'status' => 'boolean',
         ];
