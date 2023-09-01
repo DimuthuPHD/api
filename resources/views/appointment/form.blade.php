@@ -81,3 +81,33 @@
 
     <span class="text-danger">{{$errors->first('status')}}</span>
 </div>
+
+@push('scripts')
+<script>
+        $('select[name="consultant_id"]').change(function(event) {
+
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+
+        $.ajax({
+
+            type:'POST',
+
+            url: '/consultant/'+$(this).val()+'/slots',
+
+            success:function(data){
+
+                alert(data.success);
+
+            }
+
+        });
+
+
+    })
+</script>
+@endpush

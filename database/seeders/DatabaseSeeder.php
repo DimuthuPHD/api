@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EducationLevelSeeder::class);
         $this->call(JobSeekerSeeder::class);
         $this->call(AppointmentStatusSeeder::class);
+        $this->call(SlotSeeder::class);
         $this->call(AppointmentSeeder::class);
     }
 }

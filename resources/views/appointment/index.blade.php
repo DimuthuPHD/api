@@ -97,8 +97,8 @@
 
                             @foreach ($data as $appointment)
                             @php
-                            $from = \Carbon\Carbon::parse($appointment->time_from)->format('h:i:A');
-                            $to = \Carbon\Carbon::parse($appointment->time_to)->format('h:i:A');
+                            $from = \Carbon\Carbon::parse($appointment->slot->time_from)->format('h:i:A');
+                            $to = \Carbon\Carbon::parse($appointment->slot->time_to)->format('h:i:A');
                             @endphp
                             <tr>
                                 <th scope="row">#{{$appointment->id}}</th>
@@ -108,12 +108,11 @@
                                     </a>
                                 </td>
                                 <td>
-
-                                    <a href="{{route('consultant.edit', $appointment->consultant->id)}}">
-                                        {{$appointment->consultant->full_name}}
+                                    <a href="{{route('consultant.edit', $appointment->slot->consultant->id)}}">
+                                        {{$appointment->slot->consultant->full_name}}
                                     </a>
                                 </td>
-                                <td>{{$appointment->date}}</td>
+                                <td>{{$appointment->slot->date}}</td>
                                 <td>{{$from}}</td>
                                 <td>{{$to}}</td>
                                 <td>{{\Carbon\Carbon::parse($appointment->created_at)->format('Y-M-d : h:iA')}}</td>

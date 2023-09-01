@@ -63,24 +63,34 @@ class AppointmentService extends BaseService
         $query = $this->model->with('status')->orderBy('created_at', 'desc');
 
         $query->when(isset($data['date_from']), function ($q) use ($data) {
-            return $q->where('date', '>=', $data['date_from']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('date', '>=', $data['date_from']);
+            });
         });
 
         $query->when(isset($data['date_to']), function ($q) use ($data) {
-            return $q->where('date', '<=', $data['date_to']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('date', '<=', $data['date_to']);
+            });
         });
 
         $query->when(isset($data['time_from']), function ($q) use ($data) {
-            return $q->where('time_from', '>=', $data['time_from']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('time_from', '>=', $data['time_from']);
+            });
         });
 
         $query->when(isset($data['time_to']), function ($q) use ($data) {
-            return $q->where('time_to', '<=', $data['time_to']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('time_to', '<=', $data['time_to']);
+            });
         });
 
         $query->when(isset($data['consultant']), function ($q) use ($data) {
-            return $q->whereHas('consultant', function ($q) use ($data) {
-                $q->where('email', 'like', '%'.$data['consultant'].'%');
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->whereHas('consultant', function ($q) use ($data) {
+                    $q->where('email', 'like', '%'.$data['consultant'].'%');
+                });
             });
         });
 
@@ -90,9 +100,12 @@ class AppointmentService extends BaseService
             });
         });
 
-        // $query->when(auth()->user()->isConsultant(), function ($q) {
-        //     return $q->where(['consultant_id' => auth()->user()->id]);
-        // });
+        // Assuming you want to filter appointments based on the authenticated consultant
+        // if (auth()->user()->isConsultant()) {
+        //     $query->whereHas('slot', function ($q) {
+        //         $q->where(['consultant_id' => auth()->user()->id]);
+        //     });
+        // }
 
         return $query;
     }

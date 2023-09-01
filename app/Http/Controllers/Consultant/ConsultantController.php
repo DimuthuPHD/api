@@ -118,4 +118,11 @@ class ConsultantController extends Controller
     {
         //
     }
+
+    public function slots(Consultant $consultant)
+    {
+
+
+        dd($consultant->slots);
+    }
 }
