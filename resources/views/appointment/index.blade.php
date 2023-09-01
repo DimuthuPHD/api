@@ -51,7 +51,8 @@
                     <div class="col-md-2">
                         <div class="mb-3">
                             <br>
-                            <a href="{{route('appointment.create')}}" class="btn btn-square btn-success float-left">+ New</a>
+                            <a href="{{route('appointment.create')}}" class="btn btn-square btn-success float-left">+
+                                New</a>
                             <button type="submit" class="btn btn-square btn-primary pull-right">Filter</button>
                         </div>
                     </div>
@@ -101,8 +102,17 @@
                             @endphp
                             <tr>
                                 <th scope="row">#{{$appointment->id}}</th>
-                                <td>{{$appointment->jobSeeker->full_name}}</td>
-                                <td>{{$appointment->consultant->full_name}}</td>
+                                <td>
+                                    <a href="{{route('job-seeker.edit', $appointment->jobSeeker->id)}}">
+                                        {{$appointment->jobSeeker->full_name}}
+                                    </a>
+                                </td>
+                                <td>
+
+                                    <a href="{{route('consultant.edit', $appointment->consultant->id)}}">
+                                        {{$appointment->consultant->full_name}}
+                                    </a>
+                                </td>
                                 <td>{{$appointment->date}}</td>
                                 <td>{{$from}}</td>
                                 <td>{{$to}}</td>

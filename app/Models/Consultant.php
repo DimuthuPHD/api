@@ -17,11 +17,13 @@ class Consultant extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'gender_id',
         'email',
         'password',
-        'phone',
+        'telephone',
         'address',
         'notes',
+        'status',
     ];
 
     /**
@@ -43,4 +45,19 @@ class Consultant extends Model
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class);
+    }
+
+    public function jobTypes()
+    {
+        return $this->belongsToMany(JobType::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

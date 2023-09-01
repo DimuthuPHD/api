@@ -69,11 +69,6 @@ class User extends Authenticatable
         return $this->first_name.' '.$this->last_name;
     }
 
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class, 'consultant_id', 'id');
-    }
-
     public function isAdmin()
     {
         return $this->role->name == 'admin';
@@ -84,8 +79,4 @@ class User extends Authenticatable
         return $this->role->name == 'consultant';
     }
 
-    public function countries()
-    {
-        return $this->belongsToMany(Country::class, 'country_users');
-    }
 }

@@ -45,21 +45,6 @@
 
     <div class="col-md-3">
         <div class="mb-3">
-            <label class="form-label">Job Type</label>
-            <select class="form-control btn-square" name="job_type_id">
-                <option value="">--Select--</option>
-                @foreach ($jobTypes as $id => $jobType)
-                <option value="{{$id}}" {{old('job_type_id', $model?->job_type_id) == $id ?
-                    'selected' : null}}>
-                    {{$jobType}}
-                </option>
-                @endforeach
-            </select>
-            <span class="text-danger">{{$errors->first('job_type_id')}}</span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="mb-3">
             <label class="form-label">Gender</label>
             <select class="form-control btn-square" name="gender_id">
                 <option value="">--Select--</option>
@@ -75,6 +60,51 @@
     </div>
 
     <div class="col-md-12">
+        @php
+        $user_job_type_ids = old('user_types' , $model ? $model->jobTypes->pluck('id')->toArray() : []);
+        @endphp
+        <label class="form-label">Consulting Areas</label>
+        <div class="row">
+            @php $count = 1; @endphp
+            @foreach ($jobTypes as $id => $name)
+            @if ($count % 5 === 1) @if ($count > 1) </div> @endif <div class="col-md-4"> @endif
+            <label class="d-block" for="user_types{{$id}}">
+                <input class="checkbox_animated" type="checkbox" id="user_types{{$id}}" value="{{$id}}"
+                    name="job_types[]" {{in_array($id, $user_job_type_ids) ? 'checked' : false}}>
+                {{$name}}
+            </label>
+
+            @php $count++; @endphp
+            @endforeach
+            @if ($count > 1)
+        </div> @endif
+        <span class="text-danger">{{$errors->first('job_types')}}</span>
+    </div>
+    <br>
+    <div class="col-md-12">
+        @php
+        $user_country_ids = old('countries', $model ? $model->countries->pluck('id')->toArray() : []);
+        @endphp
+        <label class="form-label">Consulting Countries</label>
+        <div class="row">
+            @php $count = 1; @endphp
+            @foreach ($countries as $id => $name)
+            @if ($count % 5 === 1) @if ($count > 1) </div> @endif <div class="col-md-4"> @endif
+            <label class="d-block" for="user_cntry_{{$id}}">
+                <input class="checkbox_animated" type="checkbox" id="user_cntry_{{$id}}" value="{{$id}}"
+                    name="countries[]" {{in_array($id, $user_country_ids) ? 'checked' : false}}>
+                {{$name}}
+            </label>
+
+            @php $count++; @endphp
+            @endforeach
+            @if ($count > 1)
+        </div> @endif
+        <span class="text-danger">{{$errors->first('countries')}}</span>
+    </div>
+
+
+    <div class="col-md-12">
         <div>
             <label class="form-label">Notes</label>
             <textarea class="form-control" rows="5"
@@ -88,7 +118,8 @@
             <label class="col-form-label m-r-10">Status</label>
             <div class="flex-grow-1 text-end icon-state">
                 <label class="switch">
-                    <input type="checkbox" {{old('status', $model?->status) == 1 ? 'checked' : null}} name="status" value="1" ><span class="switch-state"></span>
+                    <input type="checkbox" {{old('status', $model?->status) == 1 ? 'checked' : null}} name="status"
+                    value="1" ><span class="switch-state"></span>
                 </label>
             </div>
         </div>
