@@ -7,6 +7,7 @@ use App\Http\Requests\Appointment\StoreRequest;
 use App\Http\Requests\Appointment\UpdateRequest;
 use App\Models\Appointment;
 use App\Models\AppointmentStatus;
+use App\Models\Consultant;
 use App\Models\JobSeeker;
 use App\Services\AppointmentService;
 use App\Services\UserService;
@@ -58,8 +59,8 @@ class AppointmentController extends Controller
     public function create()
     {
         return view('appointment.create')
-            ->withJobSeekers(JobSeeker::all()->pluck('full_name', 'id')->toArray())
-            ->withConsultants($this->userService->byRole('consultant')->pluck('full_name', 'id')->toArray())
+            ->withJobSeekers(JobSeeker::where(['status' => 1])->get()->pluck('full_name', 'id')->toArray())
+            ->withConsultants(Consultant::where(['status' => 1])->get()->pluck('full_name', 'id')->toArray())
             ->withStatuses(AppointmentStatus::all()->pluck('name', 'id')->toArray());
     }
 
