@@ -32,15 +32,13 @@
             </div>
             @endif
 
-                @if(session('success'))
-                <div class="alert alert-success inverse alert-dismissible fade show" role="alert">
-                    <i class="icon-thumb-up alert-center"></i>
-                    <p><b> Well done! </b>{!! session('success') !!}</p>
-                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
-                        <span class="bg-success" aria-hidden="true">dismiss</span>
-                    </button>
-                </div>
-                @endif
+            @if(session('success'))
+            <div class="alert alert-success inverse alert-dismissible fade show" role="alert">
+                <i class="icon-thumb-up alert-center"></i>
+                <p><b> Well done! </b>{!! session('success') !!}</p>
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+                    <span class="bg-success" aria-hidden="true">dismiss</span>
+                </button>
             </div>
             @endif
 
