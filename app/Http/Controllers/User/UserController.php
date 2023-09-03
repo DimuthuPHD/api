@@ -27,11 +27,7 @@ class UserController extends Controller
         $role = $request->role;
         $role = Role::where(['name' => $role])->first();
 
-        if (! $role) {
-            return redirect()->route('user.index', ['role' => 'consultant']);
-        }
-
-        return view('user.index')->withData($this->userService->byRole($role->name))->withRole($role);
+        return view('user.index')->withData($this->userService->paginate(15));
     }
 
     /**
@@ -51,9 +47,9 @@ class UserController extends Controller
             $data = $request->validated();
             $data['password'] = bcrypt($data['password']);
             $data['status'] = isset($data['status']) ? 1 : 0;
-            $user = $this->userService->store($data);
+            $this->userService->store($data);
 
-            return redirect()->route('user.index', ['role' => $user->role_name])->withSuccess('User created Successfully');
+            return redirect()->route('user.index')->withSuccess('User created Successfully');
         } catch (\Throwable $th) {
             throw $th;
 
@@ -80,7 +76,7 @@ class UserController extends Controller
             $data['status'] = isset($data['status']) ? 1 : 0;
             $user->update($data);
 
-            return redirect()->route('user.index', ['role' => $user->role_name])->withSuccess('user Updated Successfully');
+            return redirect()->route('user.index')->withSuccess('user Updated Successfully');
         } catch (\Throwable $th) {
             throw $th;
 

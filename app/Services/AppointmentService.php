@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use App\Models\Slot;
 use App\Services\Base\BaseService;
 
 class AppointmentService extends BaseService
@@ -19,41 +20,32 @@ class AppointmentService extends BaseService
         return $this->model->create($data);
     }
 
-    public function isConsultantAvailable(array $data, $id = null): bool
+    public function isJobSeekerAvailable(array $data, $slot, $id = null): bool
     {
         $data['id'] = $id;
-        $exsist = $this->model->where('consultant_id', $data['consultant_id'])
-            ->where('date', $data['date'])
+        $slot = Slot::find($slot);
+        $exsist = $this->model->where('job_seeker_id', $data['job_seeker_id'])
             ->whereNotIn('status_id', [4, 3])
-            ->where(function ($query) use ($data) {
-                $query->whereBetween('time_from', [$data['time_from'], $data['time_to']])
-                    ->orWhereBetween('time_to', [$data['time_from'], $data['time_to']])
-                    ->orWhere(function ($query) use ($data) {
-                        $query->where('time_from', '<=', $data['time_from'])
-                            ->where('time_to', '>=', $data['time_to']);
+            ->wherehas('slot', function ($query) use ($slot) {
+                $query
+                    ->where('date', $slot->date)
+                    ->whereBetween('time_from', [$slot->time_from, $slot->time_to])
+                    ->orWhereBetween('time_to', [$slot->time_from, $slot->time_to])
+                    ->orWhere(function ($query) use ($slot) {
+                        $query->where('time_from', '<=', $slot->time_from)
+                            ->where('time_to', '>=', $slot->time_to);
                     });
             })
-
             ->where('id', '!=', $data['id'])->exists();
 
         return $exsist ? false : true;
     }
 
-    public function isJobSeekerAvailable(array $data, $id = null): bool
+    public function isSlotAvailable($slot_id, $id = null): bool
     {
-        $data['id'] = $id;
-        $exsist = $this->model->where('job_seeker_id', $data['job_seeker_id'])
-            ->where('date', $data['date'])
-            ->whereNotIn('status_id', [4, 3])
-            ->where(function ($query) use ($data) {
-                $query->whereBetween('time_from', [$data['time_from'], $data['time_to']])
-                    ->orWhereBetween('time_to', [$data['time_from'], $data['time_to']])
-                    ->orWhere(function ($query) use ($data) {
-                        $query->where('time_from', '<=', $data['time_from'])
-                            ->where('time_to', '>=', $data['time_to']);
-                    });
-            })
-            ->where('id', '!=', $data['id'])->exists();
+        $exsist = $this->model->whereNotIn('status_id', [4, 3])
+            ->where(['slot_id' => $slot_id])
+            ->where('id', '!=', $id)->exists();
 
         return $exsist ? false : true;
     }
@@ -63,24 +55,34 @@ class AppointmentService extends BaseService
         $query = $this->model->with('status')->orderBy('created_at', 'desc');
 
         $query->when(isset($data['date_from']), function ($q) use ($data) {
-            return $q->where('date', '>=', $data['date_from']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('date', '>=', $data['date_from']);
+            });
         });
 
         $query->when(isset($data['date_to']), function ($q) use ($data) {
-            return $q->where('date', '<=', $data['date_to']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('date', '<=', $data['date_to']);
+            });
         });
 
         $query->when(isset($data['time_from']), function ($q) use ($data) {
-            return $q->where('time_from', '>=', $data['time_from']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('time_from', '>=', $data['time_from']);
+            });
         });
 
         $query->when(isset($data['time_to']), function ($q) use ($data) {
-            return $q->where('time_to', '<=', $data['time_to']);
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->where('time_to', '<=', $data['time_to']);
+            });
         });
 
         $query->when(isset($data['consultant']), function ($q) use ($data) {
-            return $q->whereHas('consultant', function ($q) use ($data) {
-                $q->where('email', 'like', '%'.$data['consultant'].'%');
+            return $q->whereHas('slot', function ($q) use ($data) {
+                $q->whereHas('consultant', function ($q) use ($data) {
+                    $q->where('email', 'like', '%'.$data['consultant'].'%');
+                });
             });
         });
 
@@ -90,9 +92,12 @@ class AppointmentService extends BaseService
             });
         });
 
-        $query->when(auth()->user()->isConsultant(), function ($q) {
-            return $q->where(['consultant_id' => auth()->user()->id]);
-        });
+        // Assuming you want to filter appointments based on the authenticated consultant
+        // if (auth()->user()->isConsultant()) {
+        //     $query->whereHas('slot', function ($q) {
+        //         $q->where(['consultant_id' => auth()->user()->id]);
+        //     });
+        // }
 
         return $query;
     }

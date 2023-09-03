@@ -1,9 +1,9 @@
-@extends('layouts.app', ['page_title' => 'Admin List'])
+@extends('layouts.app', ['page_title' => 'Consultants'])
 @section('content')
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
-            <a href="{{route('user.create')}}" class="btn btn-pill btn-primary btn-air-primary pull-right">Add
+            <a href="{{route('consultant.create')}}" class="btn btn-pill btn-primary btn-air-primary pull-right">Add
                 New</a>
         </div>
         <div class="card-block row">
@@ -13,25 +13,20 @@
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Role</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-
-                            @foreach ($data as $user)
+                            @foreach ($consultants as $consultant)
                             <tr>
-                                <th scope="row">#{{$user->id}}</th>
-                                <td>{{$user->full_name}}</td>
-                                <td>
-                                    <x-utils.status :status="$user->status"></x-utils.status>
-                                </td>
-                                <td>{{$user->email}}</td>
-                                <td>{{Str::headline($user->role->name)}}</td>
-                                <td><a href="{{route('user.edit', $user->id)}}"
+                                <th scope="row">#{{$consultant->id}}</th>
+                                <td>{{$consultant->first_name}}</td>
+                                <td>{{$consultant->last_name}}</td>
+                                <td>{{$consultant->email}}</td>
+                                <td><a href="{{route('consultant.edit', $consultant->id)}}"
                                         class="btn btn-outline-info btn-sm">Edit</a>
                                 </td>
                             </tr>
@@ -45,7 +40,7 @@
 
         </div>
         <div class="card-footer">
-            {{ $data->links('pagination::bootstrap-5') }}
+            {{ $consultants->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>

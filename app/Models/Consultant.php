@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Consultant extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -20,12 +17,13 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name',
         'last_name',
+        'gender_id',
         'email',
         'password',
-        'status',
-        'role_id',
-        'phone',
+        'telephone',
+        'address',
         'notes',
+        'status',
     ];
 
     /**
@@ -48,16 +46,19 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function role()
+    public function countries()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Country::class);
     }
 
-    public function getRoleNameAttribute()
+    public function jobTypes()
     {
-        $role = $this->role;
+        return $this->belongsToMany(JobType::class);
+    }
 
-        return $role ? $role->name : null;
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 
     public function getFullNameAttribute()
@@ -65,14 +66,8 @@ class User extends Authenticatable
         return $this->first_name.' '.$this->last_name;
     }
 
-    public function isAdmin()
+    public function slots()
     {
-        return $this->role->name == 'admin';
+        return $this->hasMany(Slot::class);
     }
-
-    public function isConsultant()
-    {
-        return $this->role->name == 'consultant';
-    }
-
 }

@@ -13,17 +13,14 @@ class Appointment extends Model
 
     protected $fillable = [
         'job_seeker_id',
-        'consultant_id',
-        'date',
-        'time_from',
-        'time_to',
+        'slot_id',
         'status_id',
         'notes',
     ];
 
-    public function consultant()
+    public function slot()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Slot::class);
     }
 
     public function jobSeeker()

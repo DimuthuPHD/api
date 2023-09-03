@@ -84,8 +84,8 @@
     <tbody>
         @foreach ($appointments as $appointment)
         @php
-        $from = \Carbon\Carbon::parse($appointment->time_from)->format('h:i A');
-        $to = \Carbon\Carbon::parse($appointment->time_to)->format('h:i A');
+        $from = \Carbon\Carbon::parse($appointment->slot->time_from)->format('h:i A');
+        $to = \Carbon\Carbon::parse($appointment->slot->time_to)->format('h:i A');
         $created = \Carbon\Carbon::parse($appointment->created_at)->format('Y-M-d h:i A');
 
         switch ($appointment->status->name) {
@@ -106,7 +106,7 @@
         <tr>
             <td>#{{$appointment->id}}</td>
             <td>{{$appointment->jobSeeker->full_name}}</td>
-            <td>{{$appointment->consultant->full_name}}</td>
+            <td>{{$appointment->slot->consultant->full_name}}</td>
             <td>{{$appointment->date}}</td>
             <td>{{$from}}</td>
             <td>{{$to}}</td>

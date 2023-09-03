@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
+use App\Models\Slot;
 use Illuminate\Database\Seeder;
 
-class RoleSeeder extends Seeder
+class SlotSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::updateOrCreate(['name' => 'admin']);
-        Role::updateOrCreate(['name' => 'content user']);
+        Slot::factory(100)->create();
     }
 }

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('consultant_job_type', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('job_seeker_id');
-            $table->unsignedBigInteger('slot_id');
-            $table->unsignedBigInteger('status_id');
-            $table->text('notes')->nullable()->default(null);
-            $table->timestamps();
+            $table->unsignedBigInteger('job_type_id');
+            $table->unsignedBigInteger('consultant_id');
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('consultant_job_type');
     }
 };

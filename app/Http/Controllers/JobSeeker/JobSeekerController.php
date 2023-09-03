@@ -7,7 +7,7 @@ use App\Http\Requests\StorejobSeekerRequest;
 use App\Http\Requests\UpdatejobSeekerRequest;
 use App\Models\EducationLevel;
 use App\Models\Gender;
-use App\Models\jobSeeker;
+use App\Models\JobSeeker;
 use App\Models\JobType;
 use App\Services\JobseekerService;
 use Illuminate\Http\Request;
@@ -73,7 +73,7 @@ class JobSeekerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatejobSeekerRequest $request, jobSeeker $jobSeeker)
+    public function update(UpdatejobSeekerRequest $request, JobSeeker $jobSeeker)
     {
         try {
             $data = $request->validated();

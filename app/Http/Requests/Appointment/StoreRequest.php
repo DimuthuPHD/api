@@ -22,15 +22,11 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'date' => ['date', 'after_or_equal:today'],
-            'time_from' => ['date_format:H:i'],
-            'time_to' => ['date_format:H:i', 'after:time_from'],
             'job_seeker_id' => ['required', 'exists:job_seekers,id'],
+            'consultant_id' => ['required', 'exists:consultants,id'],
+            'slot_id' => ['required', 'exists:slots,id'],
+            'notes' => ['sometimes', 'max:1200'],
         ];
-
-        if (auth()->user()->isAdmin()) {
-            $rules['consultant_id'] = ['required', 'exists:users,id'];
-        }
 
         return $rules;
     }
