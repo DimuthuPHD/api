@@ -32,17 +32,10 @@
                     </div>
                 </li>
                 <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
-                        <i data-feather="user"> </i><span>Job Seekers</span>
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('user.index')}}">
+                        <i data-feather="user"> </i><span>Admin Users</span>
                     </a>
                 </li>
-
-                <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
-                        <i data-feather="user"> </i><span>Job Seekers</span>
-                    </a>
-                </li>
-
 
                 <li class="sidebar-list">
                     <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
@@ -61,12 +54,6 @@
                         <i data-feather="book"> </i><span>Appointments</span>
                     </a>
                 </li>
-                <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i data-feather="airplay"></i><span class="lan-6">Widgets</span></a>
-                    <ul class="sidebar-submenu">
-                      <li><a href="general-widget.html">General</a></li>
-                      <li><a href="chart-widget.html">Chart</a></li>
-                    </ul>
-                  </li>
 
             </ul>
             <br>
