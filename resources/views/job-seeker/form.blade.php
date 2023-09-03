@@ -119,7 +119,7 @@
             <label class="col-form-label m-r-10">Status</label>
             <div class="flex-grow-1 text-end icon-state">
                 <label class="switch">
-                    <input type="checkbox" {{old('status', $model?->status) == 1 ? 'checked' : null}} name="status"><span class="switch-state"></span>
+                    <input type="checkbox" {{old('status', $model?->status) == 1 ? 'checked' : null}} name="status" value="1" ><span class="switch-state"></span>
                 </label>
             </div>
         </div>

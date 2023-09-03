@@ -27,13 +27,13 @@ class StorejobSeekerRequest extends FormRequest
             'last_name' => 'required|max:70',
             'date_of_birth' => 'required|date',
             'address' => 'required|max:250',
-            'telephone' => 'required',
+            'telephone' => 'required|unique:job_seekers,telephone',
             'email' => 'required|email|unique:job_seekers,email',
             'job_type_id' => 'required|exists:job_types,id',
             'education_level_id' => 'required|exists:education_levels,id',
             'work_experience' => 'required',
             'notes' => 'nullable',
-            'status' => 'required|accepted',
+            'status' => 'boolean',
         ];
     }
 }

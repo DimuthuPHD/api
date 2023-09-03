@@ -1,6 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.app', ['page_title' => 'Admin List'])
 @section('content')
-@props(['route' => null , 'columns' => []])
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
@@ -17,6 +16,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -25,11 +25,12 @@
                             @foreach ($data as $user)
                             <tr>
                                 <th scope="row">#{{$user->id}}</th>
-                                <td>{{$user->name}}</td>
+                                <td>{{$user->full_name}}</td>
                                 <td>
                                     <x-utils.status :status="$user->status"></x-utils.status>
                                 </td>
                                 <td>{{$user->email}}</td>
+                                <td>{{Str::headline($user->role->name)}}</td>
                                 <td><a href="{{route('user.edit', $user->id)}}"
                                         class="btn btn-outline-info btn-sm">Edit</a>
                                 </td>

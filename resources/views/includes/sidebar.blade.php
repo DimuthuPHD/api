@@ -31,14 +31,28 @@
                         <h4 class="lan-1">General </h4>
                     </div>
                 </li>
+
                 <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('job-seeker.index')}}">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('user.index')}}">
+                        <i data-feather="user"> </i><span>Admin Users</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav  {{active_nav('job-seeker.index')}}"
+                        href="{{route('job-seeker.index')}}">
                         <i data-feather="user"> </i><span>Job Seekers</span>
                     </a>
                 </li>
                 <li class="sidebar-list">
-                    <a class="sidebar-link sidebar-title link-nav" href="{{route('user.index')}}">
-                        <i data-feather="user"> </i><span>Users</span>
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('consultant.index')}}">
+                        <i data-feather="user"> </i><span>Consultants</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-list">
+                    <a class="sidebar-link sidebar-title link-nav" href="{{route('appointment.index')}}">
+                        <i data-feather="book"> </i><span>Appointments</span>
                     </a>
                 </li>
 
