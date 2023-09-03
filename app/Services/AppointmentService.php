@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use App\Models\Slot;
 use App\Services\Base\BaseService;
 
 class AppointmentService extends BaseService
@@ -19,41 +20,32 @@ class AppointmentService extends BaseService
         return $this->model->create($data);
     }
 
-    public function isConsultantAvailable(array $data, $id = null): bool
+    public function isJobSeekerAvailable(array $data, $slot, $id = null): bool
     {
         $data['id'] = $id;
-        $exsist = $this->model->where('consultant_id', $data['consultant_id'])
-            ->where('date', $data['date'])
+        $slot = Slot::find($slot);
+        $exsist = $this->model->where('job_seeker_id', $data['job_seeker_id'])
             ->whereNotIn('status_id', [4, 3])
-            ->where(function ($query) use ($data) {
-                $query->whereBetween('time_from', [$data['time_from'], $data['time_to']])
-                    ->orWhereBetween('time_to', [$data['time_from'], $data['time_to']])
-                    ->orWhere(function ($query) use ($data) {
-                        $query->where('time_from', '<=', $data['time_from'])
-                            ->where('time_to', '>=', $data['time_to']);
+            ->wherehas('slot', function ($query) use ($slot) {
+                $query
+                    ->where('date', $slot->date)
+                    ->whereBetween('time_from', [$slot->time_from, $slot->time_to])
+                    ->orWhereBetween('time_to', [$slot->time_from, $slot->time_to])
+                    ->orWhere(function ($query) use ($slot) {
+                        $query->where('time_from', '<=', $slot->time_from)
+                            ->where('time_to', '>=', $slot->time_to);
                     });
             })
-
             ->where('id', '!=', $data['id'])->exists();
 
         return $exsist ? false : true;
     }
 
-    public function isJobSeekerAvailable(array $data, $id = null): bool
+    public function isSlotAvailable($slot_id, $id = null): bool
     {
-        $data['id'] = $id;
-        $exsist = $this->model->where('job_seeker_id', $data['job_seeker_id'])
-            ->where('date', $data['date'])
-            ->whereNotIn('status_id', [4, 3])
-            ->where(function ($query) use ($data) {
-                $query->whereBetween('time_from', [$data['time_from'], $data['time_to']])
-                    ->orWhereBetween('time_to', [$data['time_from'], $data['time_to']])
-                    ->orWhere(function ($query) use ($data) {
-                        $query->where('time_from', '<=', $data['time_from'])
-                            ->where('time_to', '>=', $data['time_to']);
-                    });
-            })
-            ->where('id', '!=', $data['id'])->exists();
+        $exsist = $this->model->whereNotIn('status_id', [4, 3])
+            ->where(['slot_id' => $slot_id])
+            ->where('id', '!=', $id)->exists();
 
         return $exsist ? false : true;
     }

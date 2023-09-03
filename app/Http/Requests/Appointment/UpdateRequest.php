@@ -21,17 +21,14 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'date' => ['date_format:Y-m-d', 'after_or_equal:today'],
-            'job_seeker_id' => ['required', 'exists:job_seekers,id'],
-            'time_from' => ['required'],
-            'time_to' => ['required', 'after:time_from'],
-            'status_id' => ['required', 'exists:appointment_statuses,id'],
-        ];
 
-        if (auth()->user()->isAdmin()) {
-            $rules['consultant_id'] = ['required', 'exists:users,id'];
-        }
+        $rules = [
+            'job_seeker_id' => ['required', 'exists:job_seekers,id'],
+            'consultant_id' => ['required', 'exists:consultants,id'],
+            'slot_id' => ['required', 'exists:slots,id'],
+            'status_id' => ['required', 'exists:appointment_statuses,id'],
+            'notes' => ['sometimes', 'max:1200'],
+        ];
 
         return $rules;
     }

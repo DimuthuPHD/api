@@ -15,14 +15,16 @@
         </div>
     </div>
 
-    @if (auth()->user()->isAdmin())
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label">Consultant</label>
-            <select class="form-control btn-square" name="consultant_id">
+            <select class="form-control btn-square" name="consultant_id"
+                data-default="{{old('consultant_id', $model?->slot?->consultant_id)}}"
+                data-slot="{{old('slot_id', $model?->slot?->id)}}">
                 <option value="">--Select--</option>
                 @foreach ($consultants as $id => $role)
-                <option value="{{$id}}" {{old('consultant_id', $model?->consultant_id) == $id ? 'selected' : null}}>
+                <option value="{{$id}}" {{old('consultant_id', $model?->slot?->consultant_id) == $id ? 'selected' :
+                    null}}>
                     {{$role}}
                 </option>
                 @endforeach
@@ -30,33 +32,13 @@
             <span class="text-danger">{{$errors->first('consultant_id')}}</span>
         </div>
     </div>
-    @endif
 
-
-    <div class="col-md-3">
+    <div class="col-md-12">
         <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input class="form-control" type="date" placeholder="Address" name="date"
-                value="{{old('date', $model?->date)}}" step="any">
-            <span class="text-danger">{{$errors->first('date')}}</span>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="mb-3">
-            <label class="form-label">From</label>
-            <input class="form-control" type="time" placeholder="Address" name="time_from"
-                value="{{old('time_from', $model?->time_from)}}" step="any">
-            <span class="text-danger">{{$errors->first('time_from')}}</span>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="mb-3">
-            <label class="form-label">From</label>
-            <input class="form-control" type="time" placeholder="Address" name="time_to"
-                value="{{old('time_to', $model?->time_to)}}" step="any">
-            <span class="text-danger">{{$errors->first('time_to')}}</span>
+            <label class="form-label">Notes</label>
+            <textarea name="notes" id="notes" cols="30" class="form-control"
+                rows="10">{{old('notes', $model?->notes)}}</textarea>
+            <span class="text-danger">{{$errors->first('notes')}}</span>
         </div>
     </div>
 
@@ -82,32 +64,58 @@
     <span class="text-danger">{{$errors->first('status')}}</span>
 </div>
 
+<br><br><br><br>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Avaiable Slots</h3>
+    </div>
+    <div class="col-md-12">
+        <div class="slots">
+
+            @include('appointment.slots')
+
+        </div>
+        <span class="text-danger" id="slot_error">{{$errors->first('slot_id')}}</span>
+    </div>
+</div>
+
 @push('scripts')
 <script>
-        $('select[name="consultant_id"]').change(function(event) {
+    $(document).ready(function(){
+        var select = $('select[name="consultant_id"]');
+        if(select.data('default')){
+            getSlots(select.data('default'))
+        }
+    })
 
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+    $('select[name="consultant_id"]').on('change',function(event) {
+        $('#slot_error').text('')
+        getSlots($(this).val())
+    })
+
+    function getSlots(consultant){
+
+        $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
         });
-
 
         $.ajax({
 
-            type:'POST',
+        type:'POST',
 
-            url: '/consultant/'+$(this).val()+'/slots',
+        url: '/consultant/'+consultant+'/slots',
+        data : {default_slot: $('select[name="consultant_id"]').data('slot')},
+        success:function(data){
 
-            success:function(data){
-
-                alert(data.success);
-
+            if (data.success) {
+                $('.slots').html(data.slots);
             }
 
+        }
+
         });
-
-
-    })
+    }
 </script>
 @endpush

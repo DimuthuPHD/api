@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Gender;
 use App\Models\JobType;
 use App\Services\ConsultantService;
+use Illuminate\Http\Request;
 
 class ConsultantController extends Controller
 {
@@ -119,10 +120,11 @@ class ConsultantController extends Controller
         //
     }
 
-    public function slots(Consultant $consultant)
+    public function slots(Consultant $consultant, Request $request)
     {
+        $data = view('appointment.slots', ['slots' => $consultant->slots, 'default' => $request->default_slot])->render();
 
+        return response()->json(['slots' => $data, 'success' => true]);
 
-        dd($consultant->slots);
     }
 }
