@@ -60,7 +60,7 @@ class AppointmentController extends Controller
     {
         return view('appointment.create')
             ->withJobSeekers(JobSeeker::where(['status' => 1])->get()->pluck('full_name', 'id')->toArray())
-            ->withConsultants(Consultant::where(['status' => 1])->get()->pluck('full_name', 'id')->toArray())
+            ->withConsultants(Consultant::all()->pluck('full_name', 'id')->toArray())
             ->withStatuses(AppointmentStatus::all()->pluck('name', 'id')->toArray());
     }
 
@@ -72,20 +72,20 @@ class AppointmentController extends Controller
         try {
 
             $data = $request->validated();
-            $data['consultant_id'] = auth()->user()->isConsultant() ? auth()->user()->id : $data['consultant_id'];
             $data['status_id'] = 1;
-            $is_consultant_avaiable = $this->appointmentService->isConsultantAvailable($data);
-            $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data);
 
-            if (! $is_consultant_avaiable) {
-                throw ValidationException::withMessages([
-                    'time_from' => 'The consultant is not available at this time',
-                ]);
-            }
+            $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $request->slot_id, null);
+            $is_slot_avaiable = $this->appointmentService->isSlotAvailable($request->slot_id);
 
             if (! $is_job_seeker_avaiable) {
                 throw ValidationException::withMessages([
-                    'time_from' => 'The job seeker is not available at this time',
+                    'job_seeker_id' => 'The job seeker is not available at this time',
+                ]);
+            }
+
+            if (! $is_slot_avaiable) {
+                throw ValidationException::withMessages([
+                    'slot_id' => 'Selected slot is not available',
                 ]);
             }
 
@@ -107,7 +107,7 @@ class AppointmentController extends Controller
         return view('appointment.edit')
             ->withModel($appointment)
             ->withJobSeekers(JobSeeker::orderBy('first_name')->get()->pluck('full_name', 'id')->toArray())
-            ->withConsultants($this->userService->byRole('consultant')->pluck('full_name', 'id')->toArray())
+            ->withConsultants(Consultant::all()->pluck('full_name', 'id')->toArray())
             ->withStatuses(AppointmentStatus::all()->pluck('name', 'id')->toArray());
     }
 
@@ -118,29 +118,28 @@ class AppointmentController extends Controller
     {
         try {
             $data = $request->validated();
-            $data['consultant_id'] = auth()->user()->isConsultant() ? auth()->user()->id : $data['consultant_id'];
-            $is_consultant_avaiable = $this->appointmentService->isConsultantAvailable($data, $appointment->id);
-            $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $appointment->id);
-
-            if (! $is_consultant_avaiable) {
-                throw ValidationException::withMessages([
-                    'time_from' => 'The consultant is not available at this time',
-                ]);
-            }
+            $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $request->slot_id, $appointment->id);
+            $is_slot_avaiable = $this->appointmentService->isSlotAvailable($request->slot_id, $appointment->id);
 
             if (! $is_job_seeker_avaiable) {
                 throw ValidationException::withMessages([
-                    'time_from' => 'The job seeker is not available at this time',
+                    'job_seeker_id' => 'The job seeker is not available at this time',
+                ]);
+            }
+
+            if (! $is_slot_avaiable) {
+                throw ValidationException::withMessages([
+                    'slot_id' => 'Selected slot is not available',
                 ]);
             }
 
             $appointment->update($data);
 
-            return redirect()->route('appointment.index', ['role' => $appointment->role_name])->withSuccess('user Updated Successfully');
+            return redirect()->route('appointment.index', ['role' => $appointment->role_name])->withSuccess('Appointment Updated Successfully');
         } catch (\Throwable $th) {
             throw $th;
 
-            return redirect()->back()->withError('user Updating error');
+            return redirect()->back()->withError('Appointment Updating error');
         }
     }
 }
