@@ -105,7 +105,7 @@
 
         type:'POST',
 
-        url: '/consultant/'+consultant+'/slots',
+        url: '/admin/consultant/'+consultant+'/slots',
         data : {default_slot: $('select[name="consultant_id"]').data('slot')},
         success:function(data){
 
