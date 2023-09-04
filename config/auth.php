@@ -40,9 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'token',
+        'job_seekers' => [
+            'driver' => 'session',
             'provider' => 'job_seekers',
+        ],
+        'consultants' => [
+            'driver' => 'session',
+            'provider' => 'consultants',
         ],
     ],
 
@@ -72,6 +76,10 @@ return [
         'job_seekers' => [
             'driver' => 'eloquent',
             'model' => App\Models\JobSeeker::class,
+        ],
+        'consultants' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Consultant::class,
         ],
     ],
 

@@ -37,9 +37,8 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            // dd($request->validated());
-            if (Auth::attempt($request->validated())) {
-                $user = Auth::user();
+            if (Auth::guard('job_seekers')->attempt($request->validated())) {
+                $user = Auth::guard('job_seekers')->user();
                 $token = $user->createToken('api-token')->plainTextToken;
 
                 return response()->json([

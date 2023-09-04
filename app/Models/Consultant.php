@@ -70,4 +70,14 @@ class Consultant extends Model
     {
         return $this->hasMany(Slot::class);
     }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function availableSlots()
+    {
+        return $this->slots()->whereDoesntHave('appointment');
+    }
 }

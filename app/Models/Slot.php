@@ -20,4 +20,9 @@ class Slot extends Model
     {
         return $this->belongsTo(Consultant::class);
     }
+
+    public function appointment()
+    {
+        return $this->hasOne(Appointment::class);
+    }
 }

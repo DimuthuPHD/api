@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-class JobSeeker extends Model
+class JobSeeker extends Authenticatable
 {
     use HasFactory, HasApiTokens;
 
-    protected $guard = 'api';
+    protected $guard = 'job_seekers';
 
     protected $fillable = [
         'gender_id',

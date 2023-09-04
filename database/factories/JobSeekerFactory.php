@@ -6,6 +6,7 @@ use App\Models\EducationLevel;
 use App\Models\Gender;
 use App\Models\JobType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -33,13 +34,13 @@ class JobSeekerFactory extends Factory
             'work_experience' => fake()->paragraphs(rand(1, 5), true),
             'notes' => fake()->paragraphs(rand(1, 5), true),
             'email_verified_at' => now(),
-            'password' => bcrypt('secret'),
+            'password' => Hash::make('secret'),
             'remember_token' => Str::random(10),
             'status' => fake()->boolean(50),
         ];
     }
 
-      /**
+    /**
      * Indicate that the model's email address should be unverified.
      */
     public function unverified(): static
