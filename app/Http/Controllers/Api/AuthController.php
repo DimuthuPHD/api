@@ -39,7 +39,7 @@ class AuthController extends Controller
         try {
             if (Auth::guard('job_seekers')->attempt($request->validated())) {
                 $user = Auth::guard('job_seekers')->user();
-                $token = $user->createToken('api-token')->plainTextToken;
+                $token = $user->createToken('job_seeker_token', ['job_seekers'])->plainTextToken;
 
                 return response()->json([
                     'access_token' => $token,
