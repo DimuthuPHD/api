@@ -29,5 +29,12 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers']], function
     Route::get('countries/{country}', [CountryController::class, 'show']);
     Route::get('job-types', [JobTypeController::class, 'index']);
     Route::get('job-types/{jobType}', [JobTypeController::class, 'show']);
-    Route::get('my-appoinments', [AppointmentController::class, 'index']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'ability:consultants']], function () {
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers,consultants']], function () {
+    Route::get('my-appointments', [AppointmentController::class, 'index']);
+    Route::post('get-available-slots', [AppointmentController::class, 'availableSlots']);
 });
