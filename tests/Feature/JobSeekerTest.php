@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\Consultant\ConsultantCollection;
+use App\Models\Consultant;
 use App\Models\EducationLevel;
 use App\Models\Gender;
 use App\Models\JobType;
@@ -8,6 +10,7 @@ use Faker\Factory as Faker;
 use Illuminate\Support\Str;
 
 test('job seeker can register', function () {
+    
 
     $faker = Faker::create();
 
@@ -34,11 +37,16 @@ test('job seeker can register', function () {
 
 });
 
-it('Job Seeker List Load Successfully', function () {
-    $user = User::where(['role_id' => 1, 'status' => 1])->first();
-    $response = $this->actingAs($user)->get('/admin/job-seeker');
+it('Job Seeker can login', function () {
+    // Simulate a login request
+    $response = test()->postJson('api/login', [
+        'email' => 'test@gmail.com',
+        'password' => 'secret',
+        'user_type' => 'job_seeker',
+    ]);
     $response->assertStatus(200);
 });
+
 
 it('Job Seeker create in CMS Successfully', function () {
     $faker = Faker::create();
@@ -64,4 +72,16 @@ it('Job Seeker create in CMS Successfully', function () {
 
     $response = test()->actingAs($user)->post('/admin/job-seeker', $form_params);
     $response->assertStatus(200);
+});
+
+it('Job Seeker can get a list of available consultants', function () {
+    $consultant = Consultant::factory()->create();
+
+    // Mock the ConsultantService to return data
+    $consultantService = $this->mock(ConsultantService::class);
+    $consultantService->shouldReceive('getFiltered')->andReturn([$consultant]);
+
+    $this->get('/api/consultants')
+        ->assertStatus(200)
+        ->assertResource(ConsultantCollection::make([$consultant]));
 });

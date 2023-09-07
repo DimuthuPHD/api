@@ -37,4 +37,5 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:consultants']], function
 Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers,consultants']], function () {
     Route::get('my-appointments', [AppointmentController::class, 'index']);
     Route::post('get-available-slots', [AppointmentController::class, 'availableSlots']);
+    Route::get('logout', [AuthController::class, 'logout']);
 });

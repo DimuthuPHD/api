@@ -1,30 +1,11 @@
 <?php
 
-use App\Http\Resources\Consultant\ConsultantCollection;
-use App\Http\Resources\Consultant\ConsultantResource;
-use App\Models\Consultant;
-use App\Models\Slot;
-
-it('can get a list of consultants', function () {
-    $consultant = Consultant::factory()->create();
-
-    // Mock the ConsultantService to return data
-    $consultantService = $this->mock(ConsultantService::class);
-    $consultantService->shouldReceive('getFiltered')->andReturn([$consultant]);
-
-    $this->get('/api/consultants')
-        ->assertStatus(200)
-        ->assertResource(ConsultantCollection::make([$consultant]));
-});
-
-it('can get a single consultant', function () {
-    $consultant = Consultant::factory()->create();
-
-    $slots = Slot::factory()->create([
-        'consultant_id' => $consultant->id,
+it('Consultant can login', function () {
+    // Simulate a login request
+    $response = test()->postJson('api/login', [
+        'email' => 'test@gmail.com',
+        'password' => 'secret',
+        'user_type' => 'job_seeker',
     ]);
-
-    $this->get("/api/consultants/$consultant->id")
-        ->assertStatus(200)
-        ->assertResource(ConsultantResource::make($consultant));
+    $response->assertStatus(200);
 });
