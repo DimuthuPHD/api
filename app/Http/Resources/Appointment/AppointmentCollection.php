@@ -14,9 +14,15 @@ class AppointmentCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
+
         return
-        [
-            'data' => AppointmentResource::collection($this->collection),
-        ];
+            [
+                'data' => AppointmentResource::collection($this->collection),
+                'links' => [
+                    'self' => url()->current(),
+                    'next' => $this->nextPageUrl(),
+                    'prev' => $this->previousPageUrl(),
+                ],
+            ];
     }
 }

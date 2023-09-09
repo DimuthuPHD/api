@@ -116,4 +116,5 @@ class AuthController extends Controller
 
         return $this->apiRsponse(true, [], ['message' => 'Logged out successfully']);
     }
+
 }

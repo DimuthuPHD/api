@@ -25,13 +25,15 @@ class AppointmentController extends Controller
     {
         try {
             $appointments = $this->getLoggedInUserAppoinmtnes();
+            $appointments =  new AppointmentCollection($appointments);
 
-            return new AppointmentCollection($appointments);
-
+            return $this->apiRsponse(true, [], [
+                'appointments' => $appointments,
+            ]);
         } catch (\Throwable $th) {
             throw $th;
 
-            return response('error', 400);
+            return $this->apiRsponse(false, ['system_error' => 'System error. please conract administrator']);
         }
     }
 
@@ -48,13 +50,13 @@ class AppointmentController extends Controller
             $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $request->slot_id, null);
             $is_slot_avaiable = $this->appointmentService->isSlotAvailable($request->slot_id);
 
-            if (! $is_job_seeker_avaiable) {
+            if (!$is_job_seeker_avaiable) {
                 throw ValidationException::withMessages([
                     'job_seeker' => 'The job seeker is not available at this time',
                 ]);
             }
 
-            if (! $is_slot_avaiable) {
+            if (!$is_slot_avaiable) {
                 throw ValidationException::withMessages([
                     'slot' => 'Selected slot is not available',
                 ]);
@@ -62,16 +64,13 @@ class AppointmentController extends Controller
 
             $appointment = $this->appointmentService->store($data);
 
-            return response()->json([
-                'data' => $appointment,
-                'message' => 'Success',
-            ], 200);
-
+            return $this->apiRsponse(true, [], [
+                'appointment' => $appointment,
+            ]);
         } catch (\Throwable $th) {
             throw $th;
 
-            return response('error', 400);
-
+            return $this->apiRsponse(false, ['system_error' => 'System error. please conract administrator']);
         }
     }
 
@@ -82,22 +81,23 @@ class AppointmentController extends Controller
         if ($user) {
             $slots = new SlotCollection($user->availableSlots);
         } else {
-            return response('error', 400);
+            return $this->apiRsponse(false, ['system_error' => 'System error. please conract administrator']);
         }
 
-        return $slots;
-
+        return $this->apiRsponse(true, [], [
+            'slots' => $slots,
+        ]);
     }
 
     public function getLoggedInUserAppoinmtnes()
     {
         $user = request()->user();
         if ($user->tokenCan('consultants')) {
-            $appointments = Appointment::join('slots', 'appointments.slot_id', '=', 'slots.id')->where('slots.consultant_id', $user->id)->get('appointments.*');
+            $appointments = Appointment::join('slots', 'appointments.slot_id', '=', 'slots.id')->where('slots.consultant_id', $user->id)->paginate(10);
         } elseif ($user->tokenCan('job_seekers')) {
-            $appointments = $user->appointments;
+            $appointments = $user->appointments()->paginate(10);
         } else {
-            return response('error', 400);
+            return $this->apiRsponse(false, ['system_error' => 'System error. please conract administrator']);
         }
 
         return $appointments;
