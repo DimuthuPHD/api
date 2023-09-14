@@ -41,7 +41,7 @@ class JobSeeker extends Authenticatable
 
     public function getFullNameAttribute()
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getAgeAttribute()
@@ -62,5 +62,10 @@ class JobSeeker extends Authenticatable
     public function appointments()
     {
         return $this->hasMany(Appointment::class, 'job_seeker_id', 'id');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
     }
 }

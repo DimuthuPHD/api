@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\JobSeeker\UpdateProfileRequest;
+use App\Http\Resources\JobSeeker\JobSeekerCollection;
 use App\Models\JobSeeker;
 use App\Services\JobseekerService;
 use Illuminate\Support\Facades\Hash;
@@ -40,5 +41,11 @@ class JobSeekerController extends Controller
 
             return $this->apiRsponse(false, ['update_user' => 'System error. Please try again']);
         }
+    }
+
+    public function list()
+    {
+        $job_seekers =  new JobSeekerCollection($this->jobSeekerService->activeList());
+        return $this->apiRsponse(true, [], $job_seekers);
     }
 }

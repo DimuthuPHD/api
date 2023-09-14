@@ -13,23 +13,13 @@ class JobTypeController extends Controller
     {
         try {
 
-            return new JobTypeCollection(JobType::get());
+            $jobTypes = new JobTypeCollection(JobType::get());
 
+            return $this->apiRsponse(true, [], $jobTypes);
         } catch (\Throwable $th) {
             throw $th;
 
             return response('error', 400);
-        }
-    }
-
-    public function show(JobType $jobType)
-    {
-        try {
-            return new JobTypeResource($jobType);
-        } catch (\Throwable $th) {
-            throw $th;
-
-            return response()->json(['error' => 'Not Found'], 404);
         }
     }
 }

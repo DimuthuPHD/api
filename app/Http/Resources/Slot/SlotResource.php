@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Slot;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,8 +18,8 @@ class SlotResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->date,
-            'time_from' => $this->time_from,
-            'time_to' => $this->time_to,
+            'time_from' => Carbon::parse($this->time_from)->format('h:i:A'),
+            'time_to' => Carbon::parse($this->time_to)->format('h:i:A'),
             // 'consultant' => $this->consultant->first_name,
         ];
     }

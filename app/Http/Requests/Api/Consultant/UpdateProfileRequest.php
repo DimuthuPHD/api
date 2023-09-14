@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Api\Consultant;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class AppointmentStoreRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,18 @@ class AppointmentStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'job_seeker_id' => ['required', 'exists:job_seekers,id'],
-            'consultant_id' => ['required', 'exists:consultants,id'],
-            'slot_id' => ['required', 'exists:slots,id'],
-            'notes' => ['sometimes', 'max:1200'],
-        ];
+        $rules['first_name'] = ['required', 'max:70'];
+        $rules['last_name'] = ['required', 'max:70'];
+        $rules['telephone'] = ['required'];
+        $rules['email'] = ['required', 'email'];
+        $rules['notes'] = ['nullable', 'max:1500'];
+        $rules['password'] = ['nullable', 'min:8', 'confirmed'];
+        $rules['countries'] = ['nullable', 'array'];
+        $rules['job_types'] = ['nullable', 'array'];
+
+        return $rules;
     }
+
 
     public function failedValidation(Validator $validator)
     {

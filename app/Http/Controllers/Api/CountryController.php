@@ -13,23 +13,12 @@ class CountryController extends Controller
     {
         try {
 
-            return new CountryCollection(Country::get());
-
+            $countries =  new CountryCollection(Country::get());
+            return $this->apiRsponse(true, [], $countries);
         } catch (\Throwable $th) {
             throw $th;
 
             return response('error', 400);
-        }
-    }
-
-    public function show(Country $country)
-    {
-        try {
-            return new CountryResource($country);
-        } catch (\Throwable $th) {
-            throw $th;
-
-            return response()->json(['error' => 'Not Found'], 404);
         }
     }
 }
