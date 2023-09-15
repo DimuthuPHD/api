@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Consultant;
 
 use App\Http\Resources\Country\CountryResource;
+use App\Http\Resources\JobType\JobTypeResource;
 use App\Http\Resources\Slot\SlotResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -30,6 +31,7 @@ class ConsultantResource extends JsonResource
             'updated_at' => $this->updated_at,
             'slots' => SlotResource::collection($this->availableSlots),
             'countries' => CountryResource::collection($this->countries),
+            'job_types' => JobTypeResource::collection($this->jobTypes),
         ];
     }
 }
