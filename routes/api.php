@@ -23,6 +23,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::get('consultants', [ConsultantController::class, 'index']);
 Route::get('consultants/{consultant}', [ConsultantController::class, 'show']);
+Route::get('job-types', [JobTypeController::class, 'index']);
+Route::get('countries', [CountryController::class, 'index']);
 
 Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers']], function () {
     Route::post('job-seeker/{job_seeker}/update', [JobSeekerController::class, 'updateProfile']);
@@ -40,8 +42,6 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers,consultants'
     Route::post('appointment/{appointment}/update', [AppointmentController::class, 'update']);
     Route::get('appointment/{appointment}', [AppointmentController::class, 'show']);
     Route::get('get-available-slots', [AppointmentController::class, 'availableSlots']);
-    Route::get('countries', [CountryController::class, 'index']);
-    Route::get('job-types', [JobTypeController::class, 'index']);
     Route::get('job-seekers', [JobSeekerController::class, 'list']);
     Route::get('logout', [AuthController::class, 'logout']);
 });
