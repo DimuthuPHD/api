@@ -13,7 +13,8 @@ class AppointmentSeeder extends Seeder
     public function run(): void
     {
         if (Appointment::get()->count() < 1000) {
-            Appointment::factory(1000)->create();
+            $countToCreate = 1000 - Appointment::count();
+            Appointment::factory($countToCreate)->create();
         }
     }
 }

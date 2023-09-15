@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Consultant;
 
+use App\Http\Resources\Country\CountryResource;
 use App\Http\Resources\Slot\SlotResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,7 +29,7 @@ class ConsultantResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'slots' => SlotResource::collection($this->availableSlots),
+            'countries' => CountryResource::collection($this->countries),
         ];
-
     }
 }
