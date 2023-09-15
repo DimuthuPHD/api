@@ -28,7 +28,8 @@ class ConsultantService extends BaseService
                 });
             })->when(request()->has('job_type'), function ($q) {
                 $q->whereHas('jobTypes', function ($jobTypes) {
-                    $jobTypes->whereIn('name', request()->job_type);
+                    $job_typeNames = is_array(request()->job_type) ? request()->job_type : [request()->job_type];
+                    $jobTypes->whereIn('name', $job_typeNames);
                 });
             })
             ->where(['status' => 1])
