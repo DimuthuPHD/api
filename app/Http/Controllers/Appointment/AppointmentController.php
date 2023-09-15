@@ -14,6 +14,7 @@ use App\Services\UserService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class AppointmentController extends Controller
@@ -46,8 +47,7 @@ class AppointmentController extends Controller
                 ->setOption('margin-right', 20)
                 ->setOption(['dpi' => 150, 'defaultFont' => 'sans-serif']);
 
-            return $pdf->download('appintments_'.Carbon::parse(now())->format('y_m_d').'_'.bin2hex(random_bytes(2)).'.pdf');
-
+            return $pdf->download('appintments_' . Carbon::parse(now())->format('y_m_d') . '_' . bin2hex(random_bytes(2)) . '.pdf');
         }
 
         return view('appointment.index')->withData($appointments->paginate(15));
@@ -77,19 +77,27 @@ class AppointmentController extends Controller
             $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $request->slot_id, null);
             $is_slot_avaiable = $this->appointmentService->isSlotAvailable($request->slot_id);
 
-            if (! $is_job_seeker_avaiable) {
+            if (!$is_job_seeker_avaiable) {
                 throw ValidationException::withMessages([
                     'job_seeker_id' => 'The job seeker is not available at this time',
                 ]);
             }
 
-            if (! $is_slot_avaiable) {
+            if (!$is_slot_avaiable) {
                 throw ValidationException::withMessages([
                     'slot_id' => 'Selected slot is not available',
                 ]);
             }
 
             $appointment = $this->appointmentService->store($data);
+
+
+            Mail::send('mail.appointment.create.job_seeker', $appointment, function ($message) use ($appointment) {
+                $message->to($appointment->jobSeeker->email)->subject('ppointment Created');
+            });
+            Mail::send('mail.appointment.create.consultant', $appointment, function ($message) use ($appointment) {
+                $message->to($appointment->consultant->email)->subject('ppointment Created');
+            });
 
             return redirect()->route('appointment.index')->withSuccess('Appointment created Successfully');
         } catch (\Throwable $th) {
@@ -121,13 +129,13 @@ class AppointmentController extends Controller
             $is_job_seeker_avaiable = $this->appointmentService->isJobSeekerAvailable($data, $request->slot_id, $appointment->id);
             $is_slot_avaiable = $this->appointmentService->isSlotAvailable($request->slot_id, $appointment->id);
 
-            if (! $is_job_seeker_avaiable) {
+            if (!$is_job_seeker_avaiable) {
                 throw ValidationException::withMessages([
                     'job_seeker_id' => 'The job seeker is not available at this time',
                 ]);
             }
 
-            if (! $is_slot_avaiable) {
+            if (!$is_slot_avaiable) {
                 throw ValidationException::withMessages([
                     'slot_id' => 'Selected slot is not available',
                 ]);
