@@ -12,13 +12,11 @@ function asAdmin(): TestCase
     return test()->actingAs($user);
 }
 
-it('can manage users', function () {
-    $user = User::where(['role_id' => 1, 'status' => 1])->first();
-    $this->actingAs($user)->get('/admin/user?role=admin')->assertOk();
-});
-
 it('User can login', function () {
-    
+
+    $response = $this->get('/');
+    $response->assertStatus(200);
+
     // Create a user
     $password = 'password';
     $user = User::factory()->create([
@@ -39,4 +37,9 @@ it('User can login', function () {
         'id' => $user->id,
         'email' => $user->email,
     ]);
+});
+
+it('can manage users', function () {
+    $user = User::where(['role_id' => 1, 'status' => 1])->first();
+    $this->actingAs($user)->get('/admin/user')->assertOk();
 });

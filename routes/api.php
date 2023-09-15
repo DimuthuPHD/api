@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ConsultantController;
+use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\JobSeekerController;
+use App\Http\Controllers\Api\JobTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +19,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::get('consultants', [ConsultantController::class, 'index']);
+Route::get('consultants/{consultant}', [ConsultantController::class, 'show']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers']], function () {
+    Route::post('job-seeker/{job_seeker}/update', [JobSeekerController::class, 'updateProfile']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'ability:consultants']], function () {
+    Route::post('consultant/{consultant}/update', [ConsultantController::class, 'updateProfile']);
+    Route::get('my-countries', [ConsultantController::class, 'myCountries']);
+    Route::get('my-job-types', [ConsultantController::class, 'myJobTypes']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers,consultants']], function () {
+    Route::get('my-appointments', [AppointmentController::class, 'index']);
+    Route::patch('appointment/store', [AppointmentController::class, 'store']);
+    Route::post('appointment/{appointment}/update', [AppointmentController::class, 'update']);
+    Route::get('appointment/{appointment}', [AppointmentController::class, 'show']);
+    Route::get('get-available-slots', [AppointmentController::class, 'availableSlots']);
+    Route::get('countries', [CountryController::class, 'index']);
+    Route::get('job-types', [JobTypeController::class, 'index']);
+    Route::get('job-seekers', [JobSeekerController::class, 'list']);
+    Route::get('logout', [AuthController::class, 'logout']);
 });

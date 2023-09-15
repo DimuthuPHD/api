@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo unlink /var/www/laravelfromcodedeploy
+sudo rm -rf /home/ubuntu/sourceFromCodeDeploy/

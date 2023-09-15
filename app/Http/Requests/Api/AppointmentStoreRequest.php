@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class AppointmentStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +23,12 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->user_type == 'job_seeker') {
-            $rules['email'] = ['required', 'string', 'email', 'exists:job_seekers,email'];
-        } else {
-            $rules['email'] = ['required', 'string', 'email', 'exists:consultants,email'];
-        }
-
-        $rules['password'] = ['required', 'string'];
-        $rules['user_type'] = ['required', 'in:consultant,job_seeker'];
-
-        return $rules;
+        return [
+            'job_seeker_id' => ['required', 'exists:job_seekers,id'],
+            'consultant_id' => ['required', 'exists:consultants,id'],
+            'slot_id' => ['required', 'exists:slots,id'],
+            'notes' => ['sometimes', 'max:1200'],
+        ];
     }
 
     public function failedValidation(Validator $validator)
@@ -42,12 +38,5 @@ class LoginRequest extends FormRequest
             'message' => 'Validation errors',
             'errors' => $validator->errors(),
         ]));
-    }
-
-    public function messages()
-    {
-        return [
-            'email.exists' => 'This email is not registered with us'
-        ];
     }
 }

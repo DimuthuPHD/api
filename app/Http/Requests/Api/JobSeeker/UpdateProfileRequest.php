@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace App\Http\Requests\Api\JobSeeker;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,16 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->user_type == 'job_seeker') {
-            $rules['email'] = ['required', 'string', 'email', 'exists:job_seekers,email'];
-        } else {
-            $rules['email'] = ['required', 'string', 'email', 'exists:consultants,email'];
-        }
-
-        $rules['password'] = ['required', 'string'];
-        $rules['user_type'] = ['required', 'in:consultant,job_seeker'];
+        $rules['first_name'] = ['required', 'max:70'];
+        $rules['last_name'] = ['required', 'max:70'];
+        $rules['telephone'] = ['required'];
+        $rules['email'] = ['required', 'email'];
+        $rules['notes'] = ['nullable', 'max:1500'];
+        $rules['password'] = ['nullable', 'min:8', 'confirmed'];
 
         return $rules;
     }
+
 
     public function failedValidation(Validator $validator)
     {
@@ -42,12 +41,5 @@ class LoginRequest extends FormRequest
             'message' => 'Validation errors',
             'errors' => $validator->errors(),
         ]));
-    }
-
-    public function messages()
-    {
-        return [
-            'email.exists' => 'This email is not registered with us'
-        ];
     }
 }

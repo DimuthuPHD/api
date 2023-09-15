@@ -1,0 +1,3 @@
+#!/bin/bash
+sudo ln -s /home/ubuntu/sourceFromCodeDeploy /var/www/laravelfromcodedeploy
+sudo service nginx start
