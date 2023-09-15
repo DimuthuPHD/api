@@ -23,7 +23,8 @@ class ConsultantService extends BaseService
         $query = $this->model->query()
             ->when(request()->has('country'), function ($q) {
                 $q->whereHas('countries', function ($countries) {
-                    $countries->whereIn('slug', request()->country);
+                    $countriesNames = is_array(request()->country) ? request()->country : [request()->country];
+                    $countries->whereIn('slug', $countriesNames);
                 });
             })->when(request()->has('job_type'), function ($q) {
                 $q->whereHas('jobTypes', function ($jobTypes) {
