@@ -31,4 +31,4 @@ sudo -u $WEB_USER php artisan optimize
 
 # run migrations
 sudo -u $WEB_USER php artisan migrate --force --no-interaction
-sudo -u $WEB_USER php artisan db:seed
+# sudo -u $WEB_USER php artisan db:seed
