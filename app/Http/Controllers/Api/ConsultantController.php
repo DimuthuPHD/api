@@ -28,7 +28,7 @@ class ConsultantController extends Controller
         } catch (\Throwable $th) {
             throw $th;
 
-            return response('error', 400);
+            return $this->apiRsponse(false, ['system' => 'System Error'], []);
         }
     }
 
@@ -36,14 +36,15 @@ class ConsultantController extends Controller
     {
         try {
             if ($consultant->availableSlots->count() > 0) {
-                return new ConsultantResource($consultant);
+                $consultant =  new ConsultantResource($consultant);
+                return $this->apiRsponse(true, [],  $consultant);
             }
 
-            return response()->json(['error' => 'Not Found', 'data' => []], 404);
+            return $this->apiRsponse(false, ['system' => 'System Error'], []);
         } catch (\Throwable $th) {
             throw $th;
 
-            return response()->json(['error' => 'Not Found'], 404);
+            return $this->apiRsponse(false, ['system' => 'System Error'], []);
         }
     }
 
