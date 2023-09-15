@@ -27,8 +27,8 @@ aws s3 cp s3://codedeploylaravellightsail/CodeDeployLaravelDem/Config/env .env
 sudo -u $WEB_USER php artisan clear-compiled
 
 # Recreate boostrap/cache/compiled.php
-# sudo -u $WEB_USER php artisan optimize
+sudo -u $WEB_USER php artisan optimize
 
 # run migrations
-# sudo -u $WEB_USER php artisan migrate --force --no-interaction
+sudo -u $WEB_USER php artisan migrate --force --no-interaction
 # sudo -u $WEB_USER php artisan db:seed
