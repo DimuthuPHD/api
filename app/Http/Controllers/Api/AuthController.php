@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
-use App\Http\Resources\JobSeeker\JobSeekerResource;
 use App\Models\Consultant;
 use App\Models\JobSeeker;
 use App\Services\JobseekerService;
@@ -29,11 +28,11 @@ class AuthController extends Controller
             $data['status'] = 1;
             $this->JobseekerService->store($data);
 
-            return response('registered Successfully', 200);
+            return $this->apiRsponse(true, [], ['registered' => 'registered Successfully']);
         } catch (\Throwable $th) {
             throw $th;
 
-            return response('registerations.error', 400);
+            return $this->apiRsponse(false, ['registered' => 'registeration failed'],);
         }
     }
 
@@ -116,5 +115,4 @@ class AuthController extends Controller
 
         return $this->apiRsponse(true, [], ['message' => 'Logged out successfully']);
     }
-
 }
