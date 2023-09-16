@@ -29,9 +29,9 @@ class ConsultantResource extends JsonResource
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'slots' => SlotResource::collection($this->availableSlots),
-            'countries' => CountryResource::collection($this->countries),
-            'job_types' => JobTypeResource::collection($this->jobTypes),
+            // 'slots' => SlotResource::collection($this->availableSlots),
+            // 'countries' => CountryResource::collection($this->countries),
+            // 'job_types' => JobTypeResource::collection($this->jobTypes),
         ];
     }
 }
