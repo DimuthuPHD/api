@@ -140,7 +140,7 @@ class AppointmentController extends Controller
     {
         $user = request()->user();
         if ($user->tokenCan('consultants')) {
-            $appointments = Appointment::select('appointments.*')->join('slots', 'appointments.slot_id', '=', 'slots.id')->where('slots.consultant_id', $user->id)->paginate(10);
+            $appointments = Appointment::select('appointments.*')->join('slots', 'appointments.slot_id', '=', 'slots.id')->where('slots.consultant_id', $user->id)->orderBy('created_at', 'desc')->paginate(10);
         } elseif ($user->tokenCan('job_seekers')) {
             $appointments = $user->appointments()->paginate(10);
         } else {
