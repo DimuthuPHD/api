@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('job_seekers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('gender_id');
+            $table->unsignedBigInteger('gender_id')->nullable()->default(null);
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('date_of_birth');
-            $table->text('address');
-            $table->string('telephone')->unique();
+            $table->date('date_of_birth')->nullable()->default(null);
+            $table->text('address')->nullable()->default(null);
+            $table->string('telephone')->unique()->nullable()->default(null);
             $table->string('email')->unique();
-            $table->unsignedBigInteger('job_type_id');
-            $table->unsignedBigInteger('education_level_id');
-            $table->text('work_experience');
-            $table->text('notes')->nullable();
+            $table->unsignedBigInteger('job_type_id')->nullable()->default(null);
+            $table->unsignedBigInteger('education_level_id')->nullable()->default(null);
+            $table->text('work_experience')->nullable()->default(null);
+            $table->text('notes')->nullable()->nullable()->default(null);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('status');
