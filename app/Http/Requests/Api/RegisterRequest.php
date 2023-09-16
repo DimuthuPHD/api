@@ -24,17 +24,17 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'gender_id' => 'required|exists:genders,id',
+            // 'gender_id' => 'required|exists:genders,id',
             'first_name' => 'required|max:70',
             'last_name' => 'required|max:70',
-            'date_of_birth' => 'required|date',
-            'address' => 'required|max:250',
-            'telephone' => 'required',
+            // 'date_of_birth' => 'required|date',
+            // 'address' => 'required|max:250',
+            // 'telephone' => 'required',
             'email' => 'required|email|unique:job_seekers,email',
-            'job_type_id' => 'required|exists:job_types,id',
-            'education_level_id' => 'required|exists:education_levels,id',
-            'work_experience' => 'required',
-            'notes' => 'nullable',
+            // 'job_type_id' => 'required|exists:job_types,id',
+            // 'education_level_id' => 'required|exists:education_levels,id',
+            // 'work_experience' => 'required',
+            // 'notes' => 'nullable',
             'password' => 'required|confirmed|min:8',
         ];
     }
