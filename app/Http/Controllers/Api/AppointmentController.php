@@ -64,10 +64,10 @@ class AppointmentController extends Controller
 
             $appointment = $this->appointmentService->store($data);
 
-            Mail::send('mail.appointment.create.job_seeker', $appointment, function ($message) use ($appointment) {
+            Mail::send(['mail.appointment.create.job_seeker', $appointment], function ($message) use ($appointment) {
                 $message->to($appointment->jobSeeker->email)->subject('ppointment Created');
             });
-            Mail::send('mail.appointment.create.consultant', $appointment, function ($message) use ($appointment) {
+            Mail::send(['mail.appointment.create.consultant', $appointment], function ($message) use ($appointment) {
                 $message->to($appointment->consultant->email)->subject('ppointment Created');
             });
 
