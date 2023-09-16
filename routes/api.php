@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth:sanctum', 'ability:consultants']], function
 
 Route::group(['middleware' => ['auth:sanctum', 'ability:job_seekers,consultants']], function () {
     Route::get('my-appointments', [AppointmentController::class, 'index']);
+    Route::get('consultant/{consultant}', [ConsultantController::class, 'show']);
     Route::patch('appointment/store', [AppointmentController::class, 'store']);
     Route::post('appointment/{appointment}/update', [AppointmentController::class, 'update']);
     Route::get('appointment/{appointment}', [AppointmentController::class, 'show']);
